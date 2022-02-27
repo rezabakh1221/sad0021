@@ -60,7 +60,7 @@ async def main(client,message):
     list_name=[]
     file=open("reza.txt","r",encoding="UTF-8")
     for line in file:
-        await list_name.append(line)
+        list_name.append(line)
     file.close()
     while True:
         iran = timezone("Asia/Tehran")
