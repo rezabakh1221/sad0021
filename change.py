@@ -59,7 +59,7 @@ async def swit(num,list):
 async def main(client,message):
     list_name=[]
     file=open("reza.txt","r",encoding="UTF-8")
-    async for line in file:
+    for line in file:
         await list_name.append(line)
     file.close()
     while True:
