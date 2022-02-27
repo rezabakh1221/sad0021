@@ -7,7 +7,7 @@ api_id =12721742
 api_hash = "2a81674bd5e1ccbaed8c07f898d614ca"
 app = Client("acnt",api_id,api_hash)
 
-async def switc(s):
+def switc(s):
     t1=["⓿","❶","❷","❸","❹","❺","❻","❼","❽","❾"]
     t2=["⓪","①","②","③","④","⑤","⑥","⑦","⑧","⑨"]
     t3=["𝟶","𝟷","𝟸","𝟹","𝟺","𝟻","𝟼","𝟽","𝟾","𝟿 "]
@@ -50,13 +50,13 @@ async def switc(s):
         return t13
     if s=="t14":
         return t14
-async def swit(num,list):
+def swit(num,list):
     text=""
-    async for i in num:
+    for i in num:
         text+=list[int(i)]
     return text
 @app.on_message(filters.user(618260788) & filters.regex("^set$"))
-async def main(client,message):
+def main(client,message):
     list_name=[]
     file=open("reza.txt","r",encoding="UTF-8")
     for line in file:
@@ -76,6 +76,6 @@ async def main(client,message):
             h=swit(hour,n)
             m=swit(minutes,n)
             text=f"{name} | {h}:{m}"
-            await client.send_message(message.chat.id,f"setname {text}")
+            client.send_message("@rezabz2",f"setname {text}")
         time.sleep(60-(int(seconds)))
 app.run()
