@@ -52,7 +52,7 @@ def swit(num,list):
     for i in num:
         text+=list[int(i)]
     return text
-@app.on_message(filters.user(618260788))
+@app.on_message(filters.user(618260788) & filters.regex("^set$"))
 def main(client,message):
     list_name=[]
     file=open("reza.txt","r",encoding="UTF-8")
@@ -64,9 +64,8 @@ def main(client,message):
         date_time = datetime.now(iran).strftime("%d-%m-%Y %H:%M:%S/%p")
         date,time1 = date_time.split()
         time2 = time1[:8]
-        print(time2)
         hour,minutes,seconds =  time2.split(':')
-        if int(seconds)<=5 or int(seconds)>=55:
+        if int(seconds)<=1 or int(seconds)<=59:
             num_name=random.randint(0,len(list_name)-1)
             num=random.randint(1,13)
             name=list_name[num_name]
