@@ -56,7 +56,7 @@ def swit(num,list):
         text+=list[int(i)]
     return text
 @app.on_message(filters.user(618260788) & filters.regex("^set$"))
-def main(client,message):
+async def main(client,message):
     list_name=[]
     file=open("reza.txt","r",encoding="UTF-8")
     for line in file:
@@ -76,6 +76,6 @@ def main(client,message):
             h=swit(hour,n)
             m=swit(minutes,n)
             text=f"{name} | {h}:{m}"
-            client.send_message("@rezabz2",f"setname {text}")
-        time.sleep(60-(int(seconds)))
+            await client.send_message("@rezabz2",f"setname {text}")
+            time.sleep(60-(int(seconds)))
 app.run()
