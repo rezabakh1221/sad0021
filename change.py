@@ -21,6 +21,7 @@ def switc(s):
     t11=["𝟶","҉1","҉2","҉3","҉4","҉5","҉6","҉7","҉8","҉9҉"]
     t12=["𝟶","𝟷","𝟸","𝟹","𝟺","𝟻","𝟼","𝟽","𝟾","𝟿 "]
     t13=["⓪","①","②","③","④","⑤","⑥","⑦","⑧","⑨"]
+    t14=["⁰","¹","²","³","⁴","⁵","⁶","⁷","⁸","⁹"]
     if s=="t1":
         return t1
     if s=="t2":
@@ -47,6 +48,8 @@ def switc(s):
         return t12
     if s=="t13":
         return t13
+    if s=="t14":
+        return t14
 def swit(num,list):
     text=""
     for i in num:
@@ -67,7 +70,7 @@ def main(client,message):
         hour,minutes,seconds =  time2.split(':')
         if int(seconds)<=1 or int(seconds)<=59:
             num_name=random.randint(0,len(list_name)-1)
-            num=random.randint(1,13)
+            num=random.randint(1,14)
             name=list_name[num_name]
             n=switc(f"t{num}")
             h=swit(hour,n)
