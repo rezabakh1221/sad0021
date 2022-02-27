@@ -7,7 +7,7 @@ api_id =12721742
 api_hash = "2a81674bd5e1ccbaed8c07f898d614ca"
 app = Client("acnt",api_id,api_hash)
 
-def switc(s):
+async def switc(s):
     t1=["⓿","❶","❷","❸","❹","❺","❻","❼","❽","❾"]
     t2=["⓪","①","②","③","④","⑤","⑥","⑦","⑧","⑨"]
     t3=["𝟶","𝟷","𝟸","𝟹","𝟺","𝟻","𝟼","𝟽","𝟾","𝟿 "]
@@ -50,17 +50,17 @@ def switc(s):
         return t13
     if s=="t14":
         return t14
-def swit(num,list):
+async def swit(num,list):
     text=""
-    for i in num:
+    async for i in num:
         text+=list[int(i)]
     return text
 @app.on_message(filters.user(618260788) & filters.regex("^set$"))
-def main(client,message):
+async def main(client,message):
     list_name=[]
     file=open("reza.txt","r",encoding="UTF-8")
-    for line in file:
-        list_name.append(line)
+    async for line in file:
+        await list_name.append(line)
     file.close()
     while True:
         iran = timezone("Asia/Tehran")
@@ -68,7 +68,7 @@ def main(client,message):
         date,time1 = date_time.split()
         time2 = time1[:8]
         hour,minutes,seconds =  time2.split(':')
-        if int(seconds)<=1 or int(seconds)<=59:
+        if int(seconds)==0:
             num_name=random.randint(0,len(list_name)-1)
             num=random.randint(1,14)
             name=list_name[num_name]
@@ -76,6 +76,6 @@ def main(client,message):
             h=swit(hour,n)
             m=swit(minutes,n)
             text=f"{name} | {h}:{m}"
-            client.send_message("@rezabz2",f"setname {text}")
+            await client.send_message(message.chat.id,f"setname {text}")
         time.sleep(60-(int(seconds)))
 app.run()
