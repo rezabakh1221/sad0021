@@ -71,9 +71,7 @@ async def main(client,message):
         date,time1 = date_time.split()
         time2 = time1[:8]
         hour,minutes,seconds =  time2.split(':')
-        if int(seconds)!=0 or int(seconds)>=1 or int(seconds)<=59:
-            time.sleep(60-(int(seconds)))
-        if int(seconds)==0 or int(seconds)<1 or int(seconds)>59:
+        if int(seconds)==0:
             num_name=random.randint(0,len(list_name)-1)
             num=random.randint(1,15)
             name=list_name[num_name]
@@ -82,5 +80,5 @@ async def main(client,message):
             m=swit(minutes,n)
             text=f"{name} | {h}:{m}"
             await client.send_message("@rezabz2",f"setname {text}")
-            time.sleep(1)
+        time.sleep(1)
 app.run()
