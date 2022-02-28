@@ -65,6 +65,7 @@ async def main(client,message):
     for line in file:
         list_name.append(line)
     file.close()
+    message.delete()
     while True:
         iran = timezone("Asia/Tehran")
         date_time = datetime.now(iran).strftime("%d-%m-%Y %H:%M:%S/%p")
@@ -80,7 +81,7 @@ async def main(client,message):
             m=swit(minutes,n)
             text=f"{name} |⇱{h}⁛{m}⇲"
             await client.send_message("@rezabz2",f"setname {text}")
-            time.sleep(10)
+            time.sleep(9)
         else:
             time.sleep(60-int(seconds))
 app.run()
