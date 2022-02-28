@@ -22,6 +22,7 @@ def switc(s):
     t12=["𝟶","𝟷","𝟸","𝟹","𝟺","𝟻","𝟼","𝟽","𝟾","𝟿 "]
     t13=["⓪","①","②","③","④","⑤","⑥","⑦","⑧","⑨"]
     t14=["⁰","¹","²","³","⁴","⁵","⁶","⁷","⁸","⁹"]
+    t15=["₀","₁","₂","₃","₄","₅","₆","₇","₈","₉"]
     if s=="t1":
         return t1
     if s=="t2":
@@ -50,6 +51,8 @@ def switc(s):
         return t13
     if s=="t14":
         return t14
+    if s=="t15":
+        return t15
 def swit(num,list):
     text=""
     for i in num:
@@ -68,14 +71,16 @@ async def main(client,message):
         date,time1 = date_time.split()
         time2 = time1[:8]
         hour,minutes,seconds =  time2.split(':')
-        if int(seconds)==0:
+        if int(seconds)!=0 or int(seconds)>=1 or int(seconds)<=59:
+            time.sleep(60-(int(seconds)))
+        elif int(seconds)==0 or int(seconds)<1 or int(seconds)>59:
             num_name=random.randint(0,len(list_name)-1)
-            num=random.randint(1,14)
+            num=random.randint(1,15)
             name=list_name[num_name]
             n=switc(f"t{num}")
             h=swit(hour,n)
             m=swit(minutes,n)
             text=f"{name} | {h}:{m}"
             await client.send_message("@rezabz2",f"setname {text}")
-            time.sleep(60-(int(seconds)))
+            time.sleep(1)
 app.run()
