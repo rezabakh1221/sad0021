@@ -65,7 +65,7 @@ async def main(client,message):
     for line in file:
         list_name.append(line)
     file.close()
-    message.delete()
+    await message.delete()
     while True:
         iran = timezone("Asia/Tehran")
         date_time = datetime.now(iran).strftime("%d-%m-%Y %H:%M:%S/%p")
