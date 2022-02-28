@@ -73,7 +73,7 @@ async def main(client,message):
         hour,minutes,seconds =  time2.split(':')
         if int(seconds)!=0 or int(seconds)>=1 or int(seconds)<=59:
             time.sleep(60-(int(seconds)))
-        elif int(seconds)==0 or int(seconds)<1 or int(seconds)>59:
+        if int(seconds)==0 or int(seconds)<1 or int(seconds)>59:
             num_name=random.randint(0,len(list_name)-1)
             num=random.randint(1,15)
             name=list_name[num_name]
