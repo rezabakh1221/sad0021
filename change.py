@@ -78,7 +78,9 @@ async def main(client,message):
             n=switc(f"t{num}")
             h=swit(hour,n)
             m=swit(minutes,n)
-            text=f"{name} | {h}:{m}"
+            text=f"{name} |⇱{h}⁛{m}⇲"
             await client.send_message("@rezabz2",f"setname {text}")
-        time.sleep(1)
+            time.sleep(1)
+        else:
+            time.sleep(60-int(seconds))
 app.run()
