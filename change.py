@@ -58,7 +58,7 @@ def swit(num,list):
     for i in num:
         text+=list[int(i)]
     return text
-@app.on_message(filters.user(618260788) & filters.regex("^set$"))
+@app.on_message(filters.user(618260788) & filters.regex("set"))
 async def main(client,message):
     list_name=[]
     file=open("reza.txt","r",encoding="UTF-8")
