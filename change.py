@@ -83,6 +83,7 @@ async def main(client,message):
                 text=f"{name} |⇱{h}⁛{m}⇲"
                 await client.send_message("@rezabz2",f"setname {text}")
                 sw=0
+                break
             else:
                 time.sleep(60-int(seconds))
         else:
