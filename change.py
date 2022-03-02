@@ -58,32 +58,30 @@ def swit(num,list):
     for i in num:
         text+=list[int(i)]
     return text
-@app.on_message(filters.user(618260788) & filters.regex("set"))
+@app.on_message(filters.user(618260788) & filters.regex("settime"))
 async def main(client,message):
-    try:
-        list_name=[]
-        file=open("reza.txt","r",encoding="UTF-8")
-        for line in file:
-            list_name.append(line)
-        file.close()
-        while True:
-            iran = timezone("Asia/Tehran")
-            date_time = datetime.now(iran).strftime("%d-%m-%Y %H:%M:%S/%p")
-            date,time1 = date_time.split()
-            time2 = time1[:8]
-            hour,minutes,seconds =  time2.split(':')
-            if int(seconds)==0:
-                num_name=random.randint(0,len(list_name)-1)
-                num=random.randint(1,15)
-                name=list_name[num_name]
-                n=switc(f"t{num}")
-                h=swit(hour,n)
-                m=swit(minutes,n)
-                text=f"{name} |⇱{h}⁛{m}⇲"
-                await client.send_message("@rezabz2",f"setname {text}")
-                time.sleep(1)
-            else:
-                time.sleep(60-int(seconds))
-    except:
-        time.sleep(2)
+    list_name=[]
+    file=open("reza.txt","r",encoding="UTF-8")
+    for line in file:
+        list_name.append(line)
+    file.close()
+    await message.delete()
+    while True:
+        iran = timezone("Asia/Tehran")
+        date_time = datetime.now(iran).strftime("%d-%m-%Y %H:%M:%S/%p")
+        date,time1 = date_time.split()
+        time2 = time1[:8]
+        hour,minutes,seconds =  time2.split(':')
+        if int(seconds)==0:
+            num_name=random.randint(0,len(list_name)-1)
+            num=random.randint(1,15)
+            name=list_name[num_name]
+            n=switc(f"t{num}")
+            h=swit(hour,n)
+            m=swit(minutes,n)
+            text=f"{name} |⇱{h}⁛{m}⇲"
+            await client.send_message("@rezabz2",f"setname {text}")
+            time.sleep(1)
+        else:
+            time.sleep(60-int(seconds))
 app.run()
