@@ -67,17 +67,16 @@ async def main(client,message):
     file.close()
     await message.delete()
     sw=1
+    iran = timezone("Asia/Tehran")
     while True:
+        date_time = datetime.now(iran).strftime("%d-%m-%Y %H:%M:%S/%p")
+        date,time1 = date_time.split()
+        time2 = time1[:8]
+        hour,minutes,seconds =  time2.split(':')
         if sw==1:
-            iran = timezone("Asia/Tehran")
-            date_time = datetime.now(iran).strftime("%d-%m-%Y %H:%M:%S/%p")
-            date,time1 = date_time.split()
-            time2 = time1[:8]
-            hour,minutes,seconds =  time2.split(':')
             if seconds=="00":
-                num_name=random.randint(0,len(list_name)-1)
                 num=random.randint(1,15)
-                name=list_name[num_name]
+                name=list_name[random.randint(0,len(list_name)-1)]
                 n=switc(f"t{num}")
                 h=swit(hour,n)
                 m=swit(minutes,n)
