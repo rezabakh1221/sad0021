@@ -1,0 +1,9 @@
+pyrogram
+pyromod
+selenium
+pillow
+xlsxwriter
+xlrd
+requests
+jdatetime
+datetime
