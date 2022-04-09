@@ -240,14 +240,14 @@ def plan_class(driver,id):
         driver.get(url) 
         time.sleep(1) 
         driver.save_screenshot(f"plan_class{id}.png")
-        img=Image.open(f"plan_class{id}.png")
-        width, height = img.size
-        left = 0
-        top = 40
-        right = width
-        bottom = height-85
-        im1 = img.crop((left, top, right, bottom))
-        im1.save(f"plan_class{id}.png")
+        # img=Image.open(f"plan_class{id}.png")
+        # width, height = img.size
+        # left = 0
+        # top = 40
+        # right = width
+        # bottom = height-85
+        # im1 = img.crop((left, top, right, bottom))
+        # im1.save(f"plan_class{id}.png")
         return 1
     except:
         return 0
@@ -257,14 +257,14 @@ def emtehanat(driver,id):
         driver.get("https://puya.kashmar.ac.ir/educ/stu_portal/ShowStExamDays.php")
         time.sleep(1) 
         driver.save_screenshot(f"plan_emtehan{id}.png")
-        img=Image.open(f"plan_emtehan{id}.png")
-        width, height = img.size
-        left = 0
-        top = 40
-        right = width
-        bottom = height-85
-        im1 = img.crop((left, top, right, bottom))
-        im1.save(f"plan_emtehan{id}.png")
+        # img=Image.open(f"plan_emtehan{id}.png")
+        # width, height = img.size
+        # left = 0
+        # top = 40
+        # right = width
+        # bottom = height-85
+        # im1 = img.crop((left, top, right, bottom))
+        # im1.save(f"plan_emtehan{id}.png")
         return 1
     except:
         return 0
@@ -292,14 +292,14 @@ def hozore(driver,id):
         driver.get(url) 
         time.sleep(1) 
         driver.save_screenshot(f"hozor{id}.png")
-        img=Image.open(f"hozor{id}.png")
-        width, height = img.size
-        left = 155
-        top = 20
-        right = 900
-        bottom = 300
-        im1 = img.crop((left, top, right, bottom))
-        im1.save(f"hozor{id}.png")
+        # img=Image.open(f"hozor{id}.png")
+        # width, height = img.size
+        # left = 155
+        # top = 20
+        # right = 900
+        # bottom = 300
+        # im1 = img.crop((left, top, right, bottom))
+        # im1.save(f"hozor{id}.png")
         return 1
     except:
         return 0
@@ -310,14 +310,14 @@ def vaksan(driver,id):
         driver.get(url) 
         time.sleep(1) 
         driver.save_screenshot(f"vaksan{id}.png")
-        img=Image.open(f"vaksan{id}.png")
-        width, height = img.size
-        left =250
-        top = 350
-        right = width
-        bottom = height
-        im1 = img.crop((left, top, right, bottom))
-        im1.save(f"vaksan{id}.png")
+        # img=Image.open(f"vaksan{id}.png")
+        # width, height = img.size
+        # left =250
+        # top = 350
+        # right = width
+        # bottom = height
+        # im1 = img.crop((left, top, right, bottom))
+        # im1.save(f"vaksan{id}.png")
         return 1
     except:
         return 0
@@ -516,29 +516,24 @@ async def callback(c,ca):
                     await c.send_message(ca.message.chat.id,"🏠",reply_markup=keyboard_home)
                 else:
                     await c.send_message(password.chat.id,"در حال گرفتن اطلاعات اطفا صبور باشید")
-                # try:
-                    option=webdriver.ChromeOptions()
-                    option.binary_location=os.environ.get("GOOGLE_CHROME_BIN")
-                    option.add_argument("--headless")
-                    option.add_argument("--disable-dev-shm-usage")
-                    option.add_argument("--no-sandbox")
-                    driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
-                    login(username.text,password.text,driver)
-                    get_information(driver,username.text,ca)
-                    hozore(driver,password.chat.id)
-                    plan_class(driver,password.chat.id)
-                    vaksan(driver,password.chat.id)
-                    darss(driver,password.chat.id)
-                    emtehanat(driver,password.chat.id)
-                    number_do(driver,password.chat.id)
-                    await c.send_message(password.chat.id,"دریافت اطلاعات کامل شد",reply_markup=keyboard_personal)
-                    driver.quit()
-                    file_login=open("logined.txt","a",encoding="UTF-8")
-                    file_login.write(str(ca.message.chat.id)+" ")
-                    file_login.close()
-                    
-                # except:
-                    await c.send_message(password.chat.id,"پسوورد اشتباه است به منو اصلی باز میگردید",reply_markup=keyboard_home)
+                    try:
+                        option=webdriver.ChromeOptions()
+                        option.binary_location=os.environ.get("GOOGLE_CHROME_BIN")
+                        option.add_argument("--headless")
+                        option.add_argument("--disable-dev-shm-usage")
+                        option.add_argument("--no-sandbox")
+                        driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
+                        login(username.text,password.text,driver)
+                        get_information(driver,username.text,ca)
+                        darss(driver,password.chat.id)
+                        await c.send_message(password.chat.id,"دریافت اطلاعات کامل شد",reply_markup=keyboard_personal)
+                        driver.quit()
+                        file_login=open("logined.txt","a",encoding="UTF-8")
+                        file_login.write(str(ca.message.chat.id)+" ")
+                        file_login.close()
+                        
+                    except:
+                        await c.send_message(password.chat.id,"پسوورد اشتباه است به منو اصلی باز میگردید",reply_markup=keyboard_home)
         
     if text=="taghams":
         await c.send_photo(ca.message.chat.id,"taghams.jpg",reply_markup=keyboard_home)
@@ -553,13 +548,51 @@ async def callback(c,ca):
         await c.send_message(ca.message.chat.id,"💉",reply_markup=keyboard_vaksan)
     
     if text=="hzrOgyb":
+        par=get_user_pass(ca.message.chat.id).split()
+        option=webdriver.ChromeOptions()
+        option.binary_location=os.environ.get("GOOGLE_CHROME_BIN")
+        option.add_argument("--headless")
+        option.add_argument("--disable-dev-shm-usage")
+        option.add_argument("--no-sandbox")
+        driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
+        login(par[0],par[1],driver)
+        hozore(driver,ca.message.chat.id)
+        await c.send_message(password.chat.id,"دریافت اطلاعات کامل شد",reply_markup=keyboard_personal)
+        driver.quit()
         await c.send_photo(ca.message.chat.id,f"hozor{ca.message.chat.id}.png",reply_markup=keyboard_personal)
+        os.remove(f"hozor{ca.message.chat.id}.png")
     
     if text=="plnclas":
-        await c.send_photo(ca.message.chat.id,f"plan_class{ca.message.chat.id}.png",reply_markup=keyboard_personal)
+        try:
+            await c.send_photo(ca.message.chat.id,f"plan_class{ca.message.chat.id}.png",reply_markup=keyboard_personal)
+        except:
+            par=get_user_pass(ca.message.chat.id).split()
+            option=webdriver.ChromeOptions()
+            option.binary_location=os.environ.get("GOOGLE_CHROME_BIN")
+            option.add_argument("--headless")
+            option.add_argument("--disable-dev-shm-usage")
+            option.add_argument("--no-sandbox")
+            driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
+            login(par[0],par[1],driver)
+            plan_class(driver,ca.message.chat.id)
+            driver.quit()
+            await c.send_photo(ca.message.chat.id,f"plan_class{ca.message.chat.id}.png",reply_markup=keyboard_personal)
     
     if text=="plncors":
-        await c.send_photo(ca.message.chat.id,f"plan_emtehan{ca.message.chat.id}.png",reply_markup=keyboard_personal)
+        try:
+            await c.send_photo(ca.message.chat.id,f"plan_emtehan{ca.message.chat.id}.png",reply_markup=keyboard_personal)
+        except:
+            par=get_user_pass(ca.message.chat.id).split()
+            option=webdriver.ChromeOptions()
+            option.binary_location=os.environ.get("GOOGLE_CHROME_BIN")
+            option.add_argument("--headless")
+            option.add_argument("--disable-dev-shm-usage")
+            option.add_argument("--no-sandbox")
+            driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
+            login(par[0],par[1],driver)
+            emtehanat(driver,ca.message.chat.id)
+            driver.quit()
+            await c.send_photo(ca.message.chat.id,f"plan_emtehan{ca.message.chat.id}.png",reply_markup=keyboard_personal)
     
     if text=="lessons":
         list_key=[]
@@ -608,8 +641,21 @@ async def callback(c,ca):
             ))
         driver.quit()
     if text=="numterm":
-        await c.send_photo(ca.message.chat.id,f"number{ca.message.chat.id}.png",reply_markup=keyboard_personal)
-    
+        try:
+            await c.send_photo(ca.message.chat.id,f"number{ca.message.chat.id}.png",reply_markup=keyboard_personal)
+        except:
+            par=get_user_pass(ca.message.chat.id).split()
+            option=webdriver.ChromeOptions()
+            option.binary_location=os.environ.get("GOOGLE_CHROME_BIN")
+            option.add_argument("--headless")
+            option.add_argument("--disable-dev-shm-usage")
+            option.add_argument("--no-sandbox")
+            driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
+            login(par[0],par[1],driver)
+            number_do(driver,ca.message.chat.id)
+            driver.quit()
+            await c.send_photo(ca.message.chat.id,f"number{ca.message.chat.id}.png",reply_markup=keyboard_personal)
+        
     if text=="updinfo":
         par=get_user_pass(ca.message.chat.id).split()
         if len(par)==0:
@@ -640,7 +686,20 @@ async def callback(c,ca):
         await c.send_message(ca.message.chat.id,"🏠",reply_markup=keyboard_home)
     
     if text=="vaksshw":
-        await c.send_photo(ca.message.chat.id,f"vaksan{ca.message.chat.id}.png",reply_markup=keyboard_vaksan)
+        try:
+            await c.send_photo(ca.message.chat.id,f"vaksan{ca.message.chat.id}.png",reply_markup=keyboard_vaksan)
+        except:
+            par=get_user_pass(ca.message.chat.id).split()
+            option=webdriver.ChromeOptions()
+            option.binary_location=os.environ.get("GOOGLE_CHROME_BIN")
+            option.add_argument("--headless")
+            option.add_argument("--disable-dev-shm-usage")
+            option.add_argument("--no-sandbox")
+            driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
+            login(par[0],par[1],driver)
+            vaksan(driver,ca.message.chat.id)
+            driver.quit()
+            await c.send_photo(ca.message.chat.id,f"vaksan{ca.message.chat.id}.png",reply_markup=keyboard_vaksan)
     
     if text=="vakssbt":
         await c.send_message(ca.message.chat.id,"سلام خوش امدید\nبرای برگشت به پنل کاربری از دستور /cancel استفاده کنید")
