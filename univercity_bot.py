@@ -408,11 +408,7 @@ def get_information(driver,user,ca):
         return names
 
 #------------------------------====================================/////////////////////////////////////////////////////////////////////////////////////
-option=webdriver.ChromeOptions()
-option.binary_location=os.environ.get("GOOGLE_CHROME_BIN")
-option.add_argument("--headless")
-option.add_argument("--disable-dev-shm-usage")
-option.add_argument("--no-sandbox")
+
 #------------------------------------------------------------
 api_id=13893053
 api_hash="f586d92837b0f6eebcaa3e392397f47c"
@@ -521,6 +517,11 @@ async def callback(c,ca):
                 else:
                     await c.send_message(password.chat.id,"در حال گرفتن اطلاعات اطفا صبور باشید")
                     try:
+                        option=webdriver.ChromeOptions()
+                        option.binary_location=os.environ.get("GOOGLE_CHROME_BIN")
+                        option.add_argument("--headless")
+                        option.add_argument("--disable-dev-shm-usage")
+                        option.add_argument("--no-sandbox")
                         driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
                         login(username.text,password.text,driver)
                         get_information(driver,username.text,ca)
@@ -583,6 +584,11 @@ async def callback(c,ca):
     
     if text=="clasrom":
         number_less=ca.data[7:]
+        option=webdriver.ChromeOptions()
+        option.binary_location=os.environ.get("GOOGLE_CHROME_BIN")
+        option.add_argument("--headless")
+        option.add_argument("--disable-dev-shm-usage")
+        option.add_argument("--no-sandbox")
         driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
         link_las=search_and_get_link(driver,ca.message.chat.id,number_less)
         await c.send_message(ca.message.chat.id,f"▪لینک درس: {link_las}",reply_markup=InlineKeyboardMarkup(
@@ -611,6 +617,11 @@ async def callback(c,ca):
         else:
             await c.send_message(ca.message.chat.id,"در حال گرفتن اطلاعات اطفا صبور باشید")
             try:
+                option=webdriver.ChromeOptions()
+                option.binary_location=os.environ.get("GOOGLE_CHROME_BIN")
+                option.add_argument("--headless")
+                option.add_argument("--disable-dev-shm-usage")
+                option.add_argument("--no-sandbox")
                 driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
                 login(par[0],par[1],driver)
                 get_information(driver,par[0],ca)
@@ -638,6 +649,11 @@ async def callback(c,ca):
             us=get_name_family(ca.message.chat.id)
             await c.send_message(ca.message.chat.id,f"📍 سلام {us} عزیز به پنل کاربری خوش امدید.",reply_markup=keyboard_personal)
         else:
+            option=webdriver.ChromeOptions()
+            option.binary_location=os.environ.get("GOOGLE_CHROME_BIN")
+            option.add_argument("--headless")
+            option.add_argument("--disable-dev-shm-usage")
+            option.add_argument("--no-sandbox")
             driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
             par=get_user_pass(ca.message.chat.id).split()
             login(par[0],par[1],driver)
@@ -650,6 +666,11 @@ async def callback(c,ca):
     
     if text=="claszbt":
         number_les=ca.data[7:]
+        option=webdriver.ChromeOptions()
+        option.binary_location=os.environ.get("GOOGLE_CHROME_BIN")
+        option.add_argument("--headless")
+        option.add_argument("--disable-dev-shm-usage")
+        option.add_argument("--no-sandbox")
         driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
         await get_link_recorded(driver,ca.message.chat.id,c,number_les)
         driver.quit()
