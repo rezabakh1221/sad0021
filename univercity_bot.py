@@ -2,7 +2,6 @@ from pyrogram import Client,filters
 from pyromod import listen
 from pyrogram.types import ReplyKeyboardMarkup, InlineKeyboardMarkup, InlineKeyboardButton
 from selenium import webdriver
-from PIL import Image
 from selenium.webdriver.support.ui import WebDriverWait
 import time,xlsxwriter,xlrd,os,requests,jdatetime
 #--------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -238,16 +237,8 @@ def plan_class(driver,id):
     try:
         url="https://puya.kashmar.ac.ir/educ/educfac/ShowStSchedule.php"
         driver.get(url) 
-        time.sleep(1) 
-        driver.save_screenshot(f"plan_class{id}.png")
-        # img=Image.open(f"plan_class{id}.png")
-        # width, height = img.size
-        # left = 0
-        # top = 40
-        # right = width
-        # bottom = height-85
-        # im1 = img.crop((left, top, right, bottom))
-        # im1.save(f"plan_class{id}.png")
+        time.sleep(1)
+        driver.find_element_by_tag_name("table").screenshot(f"plan_class{id}.png")
         return 1
     except:
         return 0
@@ -256,15 +247,7 @@ def emtehanat(driver,id):
     try:
         driver.get("https://puya.kashmar.ac.ir/educ/stu_portal/ShowStExamDays.php")
         time.sleep(1) 
-        driver.save_screenshot(f"plan_emtehan{id}.png")
-        # img=Image.open(f"plan_emtehan{id}.png")
-        # width, height = img.size
-        # left = 0
-        # top = 40
-        # right = width
-        # bottom = height-85
-        # im1 = img.crop((left, top, right, bottom))
-        # im1.save(f"plan_emtehan{id}.png")
+        driver.find_element_by_tag_name("table").screenshot(f"plan_emtehan{id}.png")
         return 1
     except:
         return 0
@@ -291,15 +274,7 @@ def hozore(driver,id):
         url="https://puya.kashmar.ac.ir/educ/stu_portal/absReport.php"
         driver.get(url) 
         time.sleep(1) 
-        driver.save_screenshot(f"hozor{id}.png")
-        # img=Image.open(f"hozor{id}.png")
-        # width, height = img.size
-        # left = 155
-        # top = 20
-        # right = 900
-        # bottom = 300
-        # im1 = img.crop((left, top, right, bottom))
-        # im1.save(f"hozor{id}.png")
+        driver.find_elements_by_tag_name("table")[0].screenshot(f"hozor{id}.png")
         return 1
     except:
         return 0
@@ -309,15 +284,7 @@ def vaksan(driver,id):
         url="https://puya.kashmar.ac.ir/stuoffice/stu_portal/medical/GetVaccineCard.php"
         driver.get(url) 
         time.sleep(1) 
-        driver.save_screenshot(f"vaksan{id}.png")
-        # img=Image.open(f"vaksan{id}.png")
-        # width, height = img.size
-        # left =250
-        # top = 350
-        # right = width
-        # bottom = height
-        # im1 = img.crop((left, top, right, bottom))
-        # im1.save(f"vaksan{id}.png")
+        driver.find_element_by_id("mytable").screenshot(f"vaksan{id}.png")
         return 1
     except:
         return 0
@@ -458,6 +425,9 @@ async def send_to_all(c,m):
             await m.reply(f"✅عملیات انجام شد\n✔این پیام به {leng} کاربر ارسال شد.",reply_markup=keyboard_admin)
     except:
         await m.reply("❌شخصی برای ارسال وجود ندارد",reply_markup=keyboard_admin)
+@app.on_message(filters.private & filters.user(618260788) & filters.regex("^get$"))
+async def send_date(c,m):
+    await m.reply_document("all_information.xls")
 #---------------------------------------------------------------------------------------------------------------------------------------------------------
 def diffDate(DateStr2, DateStr1):
    from datetime import datetime
