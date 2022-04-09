@@ -516,29 +516,29 @@ async def callback(c,ca):
                     await c.send_message(ca.message.chat.id,"🏠",reply_markup=keyboard_home)
                 else:
                     await c.send_message(password.chat.id,"در حال گرفتن اطلاعات اطفا صبور باشید")
-                    try:
-                        option=webdriver.ChromeOptions()
-                        option.binary_location=os.environ.get("GOOGLE_CHROME_BIN")
-                        option.add_argument("--headless")
-                        option.add_argument("--disable-dev-shm-usage")
-                        option.add_argument("--no-sandbox")
-                        driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
-                        login(username.text,password.text,driver)
-                        get_information(driver,username.text,ca)
-                        hozore(driver,password.chat.id)
-                        plan_class(driver,password.chat.id)
-                        vaksan(driver,password.chat.id)
-                        darss(driver,password.chat.id)
-                        emtehanat(driver,password.chat.id)
-                        number_do(driver,password.chat.id)
-                        await c.send_message(password.chat.id,"دریافت اطلاعات کامل شد",reply_markup=keyboard_personal)
-                        driver.quit()
-                        file_login=open("logined.txt","a",encoding="UTF-8")
-                        file_login.write(str(ca.message.chat.id)+" ")
-                        file_login.close()
-                        
-                    except:
-                        await c.send_message(password.chat.id,"پسوورد اشتباه است به منو اصلی باز میگردید",reply_markup=keyboard_home)
+                # try:
+                    option=webdriver.ChromeOptions()
+                    option.binary_location=os.environ.get("GOOGLE_CHROME_BIN")
+                    option.add_argument("--headless")
+                    option.add_argument("--disable-dev-shm-usage")
+                    option.add_argument("--no-sandbox")
+                    driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
+                    login(username.text,password.text,driver)
+                    get_information(driver,username.text,ca)
+                    hozore(driver,password.chat.id)
+                    plan_class(driver,password.chat.id)
+                    vaksan(driver,password.chat.id)
+                    darss(driver,password.chat.id)
+                    emtehanat(driver,password.chat.id)
+                    number_do(driver,password.chat.id)
+                    await c.send_message(password.chat.id,"دریافت اطلاعات کامل شد",reply_markup=keyboard_personal)
+                    driver.quit()
+                    file_login=open("logined.txt","a",encoding="UTF-8")
+                    file_login.write(str(ca.message.chat.id)+" ")
+                    file_login.close()
+                    
+                # except:
+                    await c.send_message(password.chat.id,"پسوورد اشتباه است به منو اصلی باز میگردید",reply_markup=keyboard_home)
         
     if text=="taghams":
         await c.send_photo(ca.message.chat.id,"taghams.jpg",reply_markup=keyboard_home)
