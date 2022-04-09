@@ -256,15 +256,7 @@ def number_do(driver,id):
     try:
         driver.get("https://puya.kashmar.ac.ir/educ/educfac/stuShowEducationalLogFromGradeList.php")
         time.sleep(1) 
-        driver.save_screenshot(f"number{id}.png")
-        img=Image.open(f"number{id}.png")
-        width, height = img.size
-        left = 0
-        top = 0
-        right = width-15
-        bottom = height
-        im1 = img.crop((left, top, right, bottom))
-        im1.save(f"number{id}.png")
+        driver.find_elements_by_tag_name("table")[0].screenshot(f"number{id}.png")
         return 1
     except:
         return 0
