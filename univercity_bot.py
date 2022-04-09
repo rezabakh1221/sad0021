@@ -557,7 +557,6 @@ async def callback(c,ca):
         driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
         login(par[0],par[1],driver)
         hozore(driver,ca.message.chat.id)
-        await c.send_message(password.chat.id,"دریافت اطلاعات کامل شد",reply_markup=keyboard_personal)
         driver.quit()
         await c.send_photo(ca.message.chat.id,f"hozor{ca.message.chat.id}.png",reply_markup=keyboard_personal)
         os.remove(f"hozor{ca.message.chat.id}.png")
