@@ -276,14 +276,14 @@ async def number_do(driver,id,c):
     except:
         driver.get("https://puya.kashmar.ac.ir/educ/educfac/stuShowEducationalLogFromGradeList.php")
         time.sleep(1)
-        tr=driver.find_elements_by_tag_name("tr")
+        tr=driver.find_elements_by_tag_name("table")
         htm=1
         workbook = xlsxwriter.Workbook(f"number_do{id}.xls")
         worksheet = workbook.add_worksheet()
         f=0
         le=len(tr)
         print(le)
-        for i in tr:
+        for i in tr[0]:
             if htm<le:
                 worksheet.write(f'A{f}',driver.find_element_by_xpath(f"/html/body/center/table[1]/tbody/tr[{htm}]/td[2]").text)
                 worksheet.write(f'B{f}',driver.find_element_by_xpath(f"/html/body/center/table[1]/tbody/tr[{htm}]/td[3]").text)
