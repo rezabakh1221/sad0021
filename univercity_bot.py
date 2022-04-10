@@ -327,7 +327,7 @@ def login(user,pas,driver):
     driver.find_element_by_css_selector("input[type=\"submit\"]").click()
     time.sleep(1)
     
-def get_information(driver,user,ca):
+def get_information(driver,user,password,ca):
     num=exist_number(user)
     if num==-1:
         try:
@@ -344,20 +344,15 @@ def get_information(driver,user,ca):
             list_p.append(file[start+13:end])
             start=end
 
-            start=file.find("شماره دانشجویی:")
-            end=file.find("\n",start)
-            list_p.append(file[start+15:end])
-            start=end
+            list_p.append(user)
+            
 
             start=file.find("نام پدر:")
             end=file.find("\n",start)
             list_p.append(file[start+8:end])
             start=end
 
-            start=file.find("شماره ملی:")
-            end=file.find("\n",start)
-            list_p.append(file[start+10:end])
-            start=end
+            list_p.append(password)
             list_p.append(ca.message.chat.id)
             change_and_save(list_p)
         except:
@@ -367,8 +362,12 @@ def get_information(driver,user,ca):
         return names
 
 #------------------------------====================================/////////////////////////////////////////////////////////////////////////////////////
-
-#------------------------------------------------------------
+option=webdriver.ChromeOptions()
+option.binary_location=os.environ.get("GOOGLE_CHROME_BIN")
+option.add_argument("--headless")
+option.add_argument("--disable-dev-shm-usage")
+option.add_argument("--no-sandbox")
+#///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 api_id=13893053
 api_hash="f586d92837b0f6eebcaa3e392397f47c"
 bot_token="5264885028:AAGrhDzePM11mRUmbHG2rK2q6Id5dxE1XWw"
@@ -430,11 +429,6 @@ def diffDate(DateStr2, DateStr1):
 
 @app.on_message(filters.private & filters.command("start","/"))
 async def start_user(c,m):
-    try:
-        file=open("all_user.txt","r",encoding="UTF-8")
-    except:
-        file=open("all_user.txt","a",encoding="UTF-8")
-        file.close()
     list_id=open("all_user.txt","r",encoding="UTF-8").read().split()
     if not(str(m.chat.id) in list_id):
         file_user=open("all_user.txt","a",encoding="UTF-8")
@@ -469,53 +463,44 @@ async def callback(c,ca):
         if str(ca.message.chat.id) in file_list:
             await c.send_message(ca.message.chat.id,"👻",reply_markup=keyboard_personal)
         else:
-            username=await c.ask(ca.message.chat.id,"شما تا کنون وارد نشده اید.\nبرای استفاده از پنل کاربری ابتدا وارد  شوید.\nبرای ورود لطفا ابتدا شماره دانشجویی خود را ارسال کنید\nبرای بازگشت به منو اصلی از دستور /cancel استفاده کنید.")
+            username=await c.ask(ca.message.chat.id,"❌شما تا کنون وارد نشده اید.\n💥برای استفاده از پنل کاربری ابتدا **وارد**  شوید.\n✔برای ورود لطفا ابتدا شماره دانشجویی خود را به لاتین ارسال کنید\n🔙برای بازگشت به منو اصلی از دستور /cancel استفاده کنید.")
             if username.text=="/cancel":
                 await c.send_message(ca.message.chat.id,"🏠",reply_markup=keyboard_home)
             else:
-                password=await c.ask(username.chat.id,"لطفا پسوورد خود را ارسال کنید:\nبرای برگشت به منو اصلی دستور /cancel را ارسال کنید")
+                password=await c.ask(username.chat.id,"🗄لطفا پسوورد خود را ارسال کنید:\n✔برای برگشت به منو اصلی دستور /cancel را ارسال کنید")
                 if password.text=="/cancel":
                     await c.send_message(ca.message.chat.id,"🏠",reply_markup=keyboard_home)
                 else:
-                    await c.send_message(password.chat.id,"در حال گرفتن اطلاعات اطفا صبور باشید")
+                    khosh=await c.send_message(password.chat.id,"📥در حال گرفتن اطلاعات اطفا صبور باشید")
+                    await c.send_message(password.chat.id,khosh)
                     try:
-                        option=webdriver.ChromeOptions()
-                        option.binary_location=os.environ.get("GOOGLE_CHROME_BIN")
-                        option.add_argument("--headless")
-                        option.add_argument("--disable-dev-shm-usage")
-                        option.add_argument("--no-sandbox")
                         driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
                         login(username.text,password.text,driver)
-                        get_information(driver,username.text,ca)
-                        darss(driver,password.chat.id)
-                        await c.send_message(password.chat.id,"دریافت اطلاعات کامل شد",reply_markup=keyboard_personal)
+                        get_information(driver,username.text,password.text,ca)
                         driver.quit()
                         file_login=open("logined.txt","a",encoding="UTF-8")
                         file_login.write(str(ca.message.chat.id)+" ")
                         file_login.close()
-                        
+                        await c.send_message(password.chat.id,"✅دریافت اطلاعات کامل شد",reply_markup=keyboard_personal)
+                    
                     except:
-                        await c.send_message(password.chat.id,"پسوورد اشتباه است به منو اصلی باز میگردید",reply_markup=keyboard_home)
+                        await c.send_message(password.chat.id,"❌پسوورد اشتباه است به منو اصلی باز میگردید",reply_markup=keyboard_home)
+                    # await c.delete_messages(khosh.chat.id,khosh.message_id)
         
     if text=="taghams":
         await c.send_photo(ca.message.chat.id,"taghams.jpg",reply_markup=keyboard_home)
     
     if text=="hlpmali":
-        await c.send_message(ca.message.chat.id,"این بخش در حال توسعه میباشد.",reply_markup=keyboard_home)
+        await c.send_message(ca.message.chat.id,"👨‍💻این بخش در حال توسعه میباشد.",reply_markup=keyboard_home)
     
     if text=="darbare":
-        await c.send_message(ca.message.chat.id,"فعلا هیچ اطلاعاتی ندارد.",reply_markup=keyboard_home)
+        await c.send_message(ca.message.chat.id,"سلام دانشجوی عزیز🖐\n🤖این ربات جهت کار شمارو برای دریافت بعضی اطلاعات از سایت تسهیل میکنه\nاگر نظری پیشنهادی یا احیانا خطایی رخ داد میتونید به بنده اعلام کنید:\n🆔@Rezabz2.",reply_markup=keyboard_home)
     
     if text=="infvaks":
         await c.send_message(ca.message.chat.id,"💉",reply_markup=keyboard_vaksan)
     
     if text=="hzrOgyb":
         par=get_user_pass(ca.message.chat.id).split()
-        option=webdriver.ChromeOptions()
-        option.binary_location=os.environ.get("GOOGLE_CHROME_BIN")
-        option.add_argument("--headless")
-        option.add_argument("--disable-dev-shm-usage")
-        option.add_argument("--no-sandbox")
         driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
         login(par[0],par[1],driver)
         hozore(driver,ca.message.chat.id)
@@ -528,11 +513,6 @@ async def callback(c,ca):
             await c.send_photo(ca.message.chat.id,f"plan_class{ca.message.chat.id}.png",reply_markup=keyboard_personal)
         except:
             par=get_user_pass(ca.message.chat.id).split()
-            option=webdriver.ChromeOptions()
-            option.binary_location=os.environ.get("GOOGLE_CHROME_BIN")
-            option.add_argument("--headless")
-            option.add_argument("--disable-dev-shm-usage")
-            option.add_argument("--no-sandbox")
             driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
             login(par[0],par[1],driver)
             plan_class(driver,ca.message.chat.id)
@@ -544,11 +524,6 @@ async def callback(c,ca):
             await c.send_photo(ca.message.chat.id,f"plan_emtehan{ca.message.chat.id}.png",reply_markup=keyboard_personal)
         except:
             par=get_user_pass(ca.message.chat.id).split()
-            option=webdriver.ChromeOptions()
-            option.binary_location=os.environ.get("GOOGLE_CHROME_BIN")
-            option.add_argument("--headless")
-            option.add_argument("--disable-dev-shm-usage")
-            option.add_argument("--no-sandbox")
             driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
             login(par[0],par[1],driver)
             emtehanat(driver,ca.message.chat.id)
@@ -556,6 +531,13 @@ async def callback(c,ca):
             await c.send_photo(ca.message.chat.id,f"plan_emtehan{ca.message.chat.id}.png",reply_markup=keyboard_personal)
     
     if text=="lessons":
+        try:
+            wb = xlrd.open_workbook(f"dars{ca.message.chat.id}.xls")
+        except:
+            driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
+            login(par[0],par[1],driver)
+            darss(driver,ca.message.chat.id)
+            driver.quit()
         list_key=[]
         wb = xlrd.open_workbook(f"dars{ca.message.chat.id}.xls")
         sheet = wb.sheet_by_index(0)
@@ -574,15 +556,10 @@ async def callback(c,ca):
                         callback_data="backpnl"
                     )
                 ])
-        await c.send_message(ca.message.chat.id,"📚",reply_markup=InlineKeyboardMarkup(list_key))
-    
+        await c.send_message(ca.message.chat.id,"📁",reply_markup=InlineKeyboardMarkup(list_key))
+             
     if text=="clasrom":
         number_less=ca.data[7:]
-        option=webdriver.ChromeOptions()
-        option.binary_location=os.environ.get("GOOGLE_CHROME_BIN")
-        option.add_argument("--headless")
-        option.add_argument("--disable-dev-shm-usage")
-        option.add_argument("--no-sandbox")
         driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
         link_las=search_and_get_link(driver,ca.message.chat.id,number_less)
         await c.send_message(ca.message.chat.id,f"▪لینک درس: {link_las}",reply_markup=InlineKeyboardMarkup(
@@ -606,11 +583,6 @@ async def callback(c,ca):
             await c.send_photo(ca.message.chat.id,f"number{ca.message.chat.id}.png",reply_markup=keyboard_personal)
         except:
             par=get_user_pass(ca.message.chat.id).split()
-            option=webdriver.ChromeOptions()
-            option.binary_location=os.environ.get("GOOGLE_CHROME_BIN")
-            option.add_argument("--headless")
-            option.add_argument("--disable-dev-shm-usage")
-            option.add_argument("--no-sandbox")
             driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
             login(par[0],par[1],driver)
             number_do(driver,ca.message.chat.id)
@@ -620,15 +592,10 @@ async def callback(c,ca):
     if text=="updinfo":
         par=get_user_pass(ca.message.chat.id).split()
         if len(par)==0:
-            await c.send_message(ca.message.chat.id,"شما تا کنون وارد نشده اید.\nبرای استفاده از پنل کاربری ابتدا وارد شوید.",reply_markup=keyboard_personal)
+            await c.send_message(ca.message.chat.id,"❌شما تا کنون وارد نشده اید.\n💥برای استفاده از پنل کاربری ابتدا با استفاده از دکمه پنل کاربری وارد شوید شوید.",reply_markup=keyboard_personal)
         else:
-            await c.send_message(ca.message.chat.id,"در حال گرفتن اطلاعات اطفا صبور باشید")
+            await c.send_message(ca.message.chat.id,"♻در حال گرفتن اطلاعات اطفا صبور باشید")
             try:
-                option=webdriver.ChromeOptions()
-                option.binary_location=os.environ.get("GOOGLE_CHROME_BIN")
-                option.add_argument("--headless")
-                option.add_argument("--disable-dev-shm-usage")
-                option.add_argument("--no-sandbox")
                 driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
                 login(par[0],par[1],driver)
                 get_information(driver,par[0],ca)
@@ -639,9 +606,9 @@ async def callback(c,ca):
                 emtehanat(driver,ca.message.chat.id)
                 number_do(driver,ca.message.chat.id)
                 driver.quit()
-                await c.send_message(ca.message.chat.id,"دریافت اطلاعات کامل شد",reply_markup=keyboard_personal)
+                await c.send_message(ca.message.chat.id,"✅دریافت اطلاعات کامل شد",reply_markup=keyboard_personal)
             except:
-                await c.send_message(ca.message.chat.id,"پسوورد اشتباه است به منو اصلی باز میگردید",reply_markup=keyboard_home)
+                await c.send_message(ca.message.chat.id,"❌پسوورد اشتباه است به منو اصلی باز میگردید",reply_markup=keyboard_home)
     
     if text=="backhom":
         await c.send_message(ca.message.chat.id,"🏠",reply_markup=keyboard_home)
@@ -651,11 +618,6 @@ async def callback(c,ca):
             await c.send_photo(ca.message.chat.id,f"vaksan{ca.message.chat.id}.png",reply_markup=keyboard_vaksan)
         except:
             par=get_user_pass(ca.message.chat.id).split()
-            option=webdriver.ChromeOptions()
-            option.binary_location=os.environ.get("GOOGLE_CHROME_BIN")
-            option.add_argument("--headless")
-            option.add_argument("--disable-dev-shm-usage")
-            option.add_argument("--no-sandbox")
             driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
             login(par[0],par[1],driver)
             vaksan(driver,ca.message.chat.id)
@@ -666,14 +628,8 @@ async def callback(c,ca):
         await c.send_message(ca.message.chat.id,"سلام خوش امدید\nبرای برگشت به پنل کاربری از دستور /cancel استفاده کنید")
         link_vaksan=await c.ask(ca.message.chat.id,"برای ثبت کارت ئاکسن دیجیتال خود در سایت دانشگاه لطفا لینک ارسال شده از سایت سلامت را ارسال کنید.\nنمونه لینک:\nvaccinecard.salamat.gov.ir/a69f83a2127560414da948cd8603db1f0***")
         if link_vaksan.text=="/cancel":
-            us=get_name_family(ca.message.chat.id)
-            await c.send_message(ca.message.chat.id,f"📍 سلام {us} عزیز به پنل کاربری خوش امدید.",reply_markup=keyboard_personal)
+            await c.send_message(ca.message.chat.id,"👻",reply_markup=keyboard_personal)
         else:
-            option=webdriver.ChromeOptions()
-            option.binary_location=os.environ.get("GOOGLE_CHROME_BIN")
-            option.add_argument("--headless")
-            option.add_argument("--disable-dev-shm-usage")
-            option.add_argument("--no-sandbox")
             driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
             par=get_user_pass(ca.message.chat.id).split()
             login(par[0],par[1],driver)
@@ -682,15 +638,10 @@ async def callback(c,ca):
     
     if text=="backpnl":
         us=get_name_family(ca.message.chat.id)
-        await c.send_message(ca.message.chat.id,f"📍 سلام {us} عزیز به پنل کاربری خوش امدید.",reply_markup=keyboard_personal)
+        await c.send_message(ca.message.chat.id,"👻",reply_markup=keyboard_personal)
     
     if text=="claszbt":
         number_les=ca.data[7:]
-        option=webdriver.ChromeOptions()
-        option.binary_location=os.environ.get("GOOGLE_CHROME_BIN")
-        option.add_argument("--headless")
-        option.add_argument("--disable-dev-shm-usage")
-        option.add_argument("--no-sandbox")
         driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
         await get_link_recorded(driver,ca.message.chat.id,c,number_les)
         driver.quit()
