@@ -365,12 +365,15 @@ def get_information(driver,user,password,ca):
         pass
 
 def is_raced(driver,user,password):
-    url="https://puya.kashmar.ac.ir/gateway/PuyaMainFrame.php"
-    driver.get(url) 
-    time.sleep(1) 
-    x=driver.find_elements_by_tag_name("span")
-    c=x[0].text.find("راکد")
-    return c
+    try:
+        url="https://puya.kashmar.ac.ir/gateway/PuyaMainFrame.php"
+        driver.get(url) 
+        time.sleep(1) 
+        x=driver.find_elements_by_tag_name("span")
+        c=x[0].text.find("راکد")
+        return c
+    except:
+        return 0
 #------------------------------====================================/////////////////////////////////////////////////////////////////////////////////////
 option=webdriver.ChromeOptions()
 option.binary_location=os.environ.get("GOOGLE_CHROME_BIN")
@@ -489,20 +492,21 @@ async def callback(c,ca):
                     khosh=await c.send_message(password.chat.id,"📥در حال گرفتن اطلاعات لطفا صبور باشید")
                     driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
                     print(login(username.text,password.text,driver),get_information(driver,username.text,password.text,ca))
-                    if login(username.text,password.text,driver)==0:
-                        sinn=0
-                    if is_raced(driver,username.text,password.text)==-1:
-                        if get_information(driver,username.text,password.text,ca)==0:
+                    if login(username.text,password.text,driver)==1:
+                        if get_information(driver,username.text,password.text,ca)==1:
+                            if is_raced(driver,username.text,password.text)==-1:
+                                await c.send_message(password.chat.id,"✅دریافت اطلاعات کامل شد",reply_markup=keyboard_personal)
+                                file_login=open("logined.txt","a",encoding="UTF-8")
+                                file_login.write(str(ca.message.chat.id)+" ")
+                                file_login.close()
+                            else:
+                                await c.send_message(password.chat.id,"❌این دانشجو وضعیت راکد دارد و دسترسی به پنل کاربری ندارد‼",reply_markup=keyboard_home)
+                        else:
                             sinn=0
-                        if sinn==1:
-                            await c.send_message(password.chat.id,"✅دریافت اطلاعات کامل شد",reply_markup=keyboard_personal)
-                            file_login=open("logined.txt","a",encoding="UTF-8")
-                            file_login.write(str(ca.message.chat.id)+" ")
-                            file_login.close()
-                        if sinn==0:
-                            await c.send_message(password.chat.id,"❌اطلاعات ورود اشتباه است به منو اصلی باز میگردید‼",reply_markup=keyboard_home)
                     else:
-                        await c.send_message(password.chat.id,"❌این دانشجو وضعیت راکد دارد و دسترسی به پنل کاربری ندارد‼",reply_markup=keyboard_home)
+                        sinn=0
+                    if sinn==0:
+                        await c.send_message(password.chat.id,"❌اطلاعات ورود اشتباه است به منو اصلی باز میگردید‼",reply_markup=keyboard_home)
                     driver.quit()
                     await c.delete_messages(khosh.chat.id,khosh.message_id)
         
