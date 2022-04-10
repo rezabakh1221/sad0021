@@ -491,7 +491,7 @@ async def callback(c,ca):
                         s=0
                     driver.quit()
                     if s==0:
-                        await c.send_message(password.chat.id,"❌پسوورد اشتباه است به منو اصلی باز میگردید",reply_markup=keyboard_home)
+                        await c.send_message(password.chat.id,"اطلاعات ورود اشتباه است به منو اصلی باز میگردید",reply_markup=keyboard_home)
                     await c.delete_messages(khosh.chat.id,khosh.message_id)
         
     if text=="taghams":
