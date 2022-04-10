@@ -263,12 +263,46 @@ def emtehanat(driver,id):
 def number_do(driver,id):
     try:
         driver.get("https://puya.kashmar.ac.ir/educ/educfac/stuShowEducationalLogFromGradeList.php")
-        time.sleep(1) 
-        driver.find_elements_by_tag_name("table")[0].screenshot(f"number{id}.png")
+        time.sleep(1)
+        tr=driver.find_elements_by_tag_name("tr")
+        htm=1
+        workbook = xlsxwriter.Workbook(f"number_do{id}.xls")
+        worksheet = workbook.add_worksheet()
+        f=0
+        le=len(tr)
+        for i in tr:
+            if htm<le:
+                worksheet.write(f'A{f}',driver.find_element_by_xpath(f"/html/body/center/table[1]/tbody/tr[{htm}]/td[2]").text)
+                worksheet.write(f'B{f}',driver.find_element_by_xpath(f"/html/body/center/table[1]/tbody/tr[{htm}]/td[3]").text)
+                worksheet.write(f'C{f}',driver.find_element_by_xpath(f"/html/body/center/table[1]/tbody/tr[{htm}]/td[4]").text)
+                worksheet.write(f'D{f}',driver.find_element_by_xpath(f"/html/body/center/table[1]/tbody/tr[{htm}]/td[5]").text)
+                worksheet.write(f'E{f}',driver.find_element_by_xpath(f"/html/body/center/table[1]/tbody/tr[{htm}]/td[6]").text)
+                worksheet.write(f'F{f}',driver.find_element_by_xpath(f"/html/body/center/table[1]/tbody/tr[{htm}]/td[7]").text)
+                worksheet.write(f'G{f}',driver.find_element_by_xpath(f"/html/body/center/table[1]/tbody/tr[{htm}]/td[8]").text)
+                worksheet.write(f'H{f}',driver.find_element_by_xpath(f"/html/body/center/table[1]/tbody/tr[{htm}]/td[9]").text)
+            if htm==le:
+                worksheet.write(f'A{f}',driver.find_element_by_xpath(f"/html/body/center/table[1]/tbody/tr[{htm}]/td[1]").text)
+                worksheet.write(f'B{f}',driver.find_element_by_xpath(f"/html/body/center/table[1]/tbody/tr[{htm}]/td[2]").text)
+                worksheet.write(f'C{f}',driver.find_element_by_xpath(f"/html/body/center/table[1]/tbody/tr[{htm}]/td[3]").text)
+                worksheet.write(f'D{f}',driver.find_element_by_xpath(f"/html/body/center/table[1]/tbody/tr[{htm}]/td[4]").text)
+            f+=1
+            htm+=1
+        workbook.close()
         return 1
     except:
         return 0
-    
+async def send_number_do(id,c):
+    text=""
+    wb = xlrd.open_workbook(f"number_do{id}.xls")
+    sheet = wb.sheet_by_index(0)
+    sheet.cell_value(0, 0)
+    for i in range(sheet.nrows):
+        p=sheet.row_values(i)
+        if len(p)>5:
+            text+=f"📝کد درس: {p[0]} ||| 📚نام درس: {p[1]} ||| 🔶تعداد واحد: {p[2]} ||| 👨‍🎓استاد: {p[3]} ||| ❇نمره: {p[4]} ||| 🔴وضعیت نمره: {p[5]} ||| 📋شماره لیست نمره: {p[6]} ||| ❇وضعیت لیست نمره: {p[7]}\n➖➖\n"
+        else:
+            text+=f"🔲{p[0]}: {p[1]} ||| 📜{p[2]}: {p[3]}"
+    await c.send_message(id,text,reply_markup=keyboard_kansel)
 def hozore(driver,id):
     try:
         url="https://puya.kashmar.ac.ir/educ/stu_portal/absReport.php"
@@ -387,8 +421,7 @@ def is_raced(driver):
 #------------------------------====================================/////////////////////////////////////////////////////////////////////////////////////
 option=webdriver.ChromeOptions()
 option.binary_location=os.environ.get("GOOGLE_CHROME_BIN")
-# option.add_argument("--headless")
-option.add_argument("--start-fullscreen")
+option.add_argument("--headless")
 option.add_argument("--disable-dev-shm-usage")
 option.add_argument("--no-sandbox")
 #///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -633,7 +666,7 @@ async def callback(c,ca):
     if text=="numterm":
         dart=await c.send_message(ca.message.chat.id,"📥در حال دریافت...\nلطفا کمی صبر کنید")
         try:
-            await c.send_photo(ca.message.chat.id,f"number{ca.message.chat.id}.png",reply_markup=keyboard_personal)
+            await send_number_do(ca.message.chat.id,c)
         except:
             par=get_user_pass(ca.message.chat.id).split()
             driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
@@ -641,7 +674,7 @@ async def callback(c,ca):
             login(par[0],par[1],driver)
             number_do(driver,ca.message.chat.id)
             driver.quit()
-            await c.send_photo(ca.message.chat.id,f"number{ca.message.chat.id}.png",reply_markup=keyboard_personal)
+            await send_number_do(ca.message.chat.id,c)
         await c.delete_messages(dart.chat.id,dart.message_id)
         
     if text=="updinfo":
