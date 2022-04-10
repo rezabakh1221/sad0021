@@ -116,6 +116,8 @@ keyboard_vaksan=InlineKeyboardMarkup(
             )
 file=open("logined.txt","a",encoding="UTF-8")
 file.close()
+file=open("all_user.txt","a",encoding="UTF-8")
+file.close()
 #--------------------------------------------------------------------------------------------------------------------------------------------------------
 try:
     wb = xlrd.open_workbook("all_information.xls")
