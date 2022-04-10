@@ -501,6 +501,7 @@ async def callback(c,ca):
                     sinn=1
                     khosh=await c.send_message(password.chat.id,"📥در حال گرفتن اطلاعات لطفا صبور باشید")
                     driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
+                    driver.maximize_window()
                     if login(username.text,password.text,driver)==1:
                         if get_information(driver,username.text,password.text,ca)==1:
                             if is_raced(driver)==-1:
@@ -536,6 +537,7 @@ async def callback(c,ca):
         hzr=await c.send_message(ca.message.chat.id,"📥در حال دریافت...\nلطفا کمی صبر کنید")
         par=get_user_pass(ca.message.chat.id).split()
         driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
+        driver.maximize_window()
         login(par[0],par[1],driver)
         hozore(driver,ca.message.chat.id)
         driver.quit()
@@ -550,6 +552,7 @@ async def callback(c,ca):
         except:
             par=get_user_pass(ca.message.chat.id).split()
             driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
+            driver.maximize_window()
             login(par[0],par[1],driver)
             plan_class(driver,ca.message.chat.id)
             driver.quit()
@@ -563,6 +566,7 @@ async def callback(c,ca):
         except:
             par=get_user_pass(ca.message.chat.id).split()
             driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
+            driver.maximize_window()
             login(par[0],par[1],driver)
             emtehanat(driver,ca.message.chat.id)
             driver.quit()
@@ -575,6 +579,7 @@ async def callback(c,ca):
         except:
             par=get_user_pass(ca.message.chat.id).split()
             driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
+            driver.maximize_window()
             login(par[0],par[1],driver)
             darss(driver,ca.message.chat.id)
             driver.quit()
@@ -605,6 +610,7 @@ async def callback(c,ca):
         code_darse=number_less.split("-")
         name_ostad=get_name_ostad(code_darse[0],ca.message.chat.id)
         driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
+        driver.maximize_window()
         link_las=search_and_get_link(driver,ca.message.chat.id,number_less)
         await c.send_message(ca.message.chat.id,f"👨‍🎓 نام استاد: {name_ostad}\n🆔 کد درس: {code_darse[0]}\n💠گروه درس: {code_darse[1]}\n▪لینک درس: {link_las}",reply_markup=InlineKeyboardMarkup(
             [
@@ -630,6 +636,7 @@ async def callback(c,ca):
         except:
             par=get_user_pass(ca.message.chat.id).split()
             driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
+            driver.maximize_window()
             login(par[0],par[1],driver)
             number_do(driver,ca.message.chat.id)
             driver.quit()
@@ -643,6 +650,7 @@ async def callback(c,ca):
         else:
             mes_job=await c.send_message(ca.message.chat.id,"♻در حال گرفتن اطلاعات لطفا صبور باشید")
             driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
+            driver.maximize_window()
             login(par[0],par[1],driver)
             get_information(driver,par[0],par[1],ca)
             hozore(driver,ca.message.chat.id)
@@ -665,6 +673,7 @@ async def callback(c,ca):
         except:
             par=get_user_pass(ca.message.chat.id).split()
             driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
+            driver.maximize_window()
             login(par[0],par[1],driver)
             vaksan(driver,ca.message.chat.id)
             driver.quit()
@@ -679,6 +688,7 @@ async def callback(c,ca):
         else:
             ms=await c.send_message(link_vaksan.chat.id,"📤در حال بارگزاری...\nلطفا کمی صبر کنید")
             driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
+            driver.maximize_window()
             par=get_user_pass(ca.message.chat.id).split()
             login(par[0],par[1],driver)
             await comit_vaksan(driver,link_vaksan.text,c,ca.message.chat.id)
@@ -695,9 +705,9 @@ async def callback(c,ca):
         number_les=ca.data[7:]
         maseg_class=await c.send_message(ca.message.chat.id,"📥در حال دریافت لیست.\nلطفا کمی منتظر بمانید.")
         driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
+        driver.maximize_window()
         await get_link_recorded(driver,ca.message.chat.id,c,number_les)
         driver.quit()
         await c.delete_messages(maseg_class.chat.id,maseg_class.message_id)
     
-
 app.run()
