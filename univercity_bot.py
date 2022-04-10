@@ -171,7 +171,14 @@ def get_user_pass(number):
         p=sheet.row_values(i)
         if int(number) == int(p[5]):
             return f"{p[2]} {p[4]}"
-        
+def get_name_ostad(number,id):
+    wb = xlrd.open_workbook(f"dars{id}.xls")
+    sheet = wb.sheet_by_index(0)
+    sheet.cell_value(0, 0)
+    for i in range(sheet.nrows):
+        p=sheet.row_values(i)
+        if int(number) == int(p[1]):
+            return p[3]
 def get_name_family(number):
     wb = xlrd.open_workbook("all_information.xls")
     sheet = wb.sheet_by_index(0)
@@ -230,7 +237,9 @@ async def get_link_recorded(driver,id,c,number):
                         )
                     ]
                 )
-        await c.send_message(id,"🎞",parse_mode="markdown",reply_markup=InlineKeyboardMarkup(list_record))
+        code_darse=number.split("-")
+        name_ostad=get_name_ostad(code_darse[0],id)
+        await c.send_message(id,f"👨‍🎓 نام استاد: {name_ostad}\n🆔 کد درس: {code_darse[0]}\n💠گروه درس: {code_darse[1]}",parse_mode="markdown",reply_markup=InlineKeyboardMarkup(list_record))
 #----------------------------------------------------------------------------------------------------
 def plan_class(driver,id):
     try:
@@ -311,6 +320,7 @@ def darss(driver,id):
                     worksheet.write(f'A{f}',driver.find_element_by_xpath(f"/html/body/center/table[2]/tbody/tr[{j}]/td[4]").text)
                     worksheet.write(f'B{f}',driver.find_element_by_xpath(f"/html/body/center/table[2]/tbody/tr[{j}]/td[2]").text)
                     worksheet.write(f'C{f}',driver.find_element_by_xpath(f"/html/body/center/table[2]/tbody/tr[{j}]/td[3]").text)
+                    worksheet.write(f'D{f}',driver.find_element_by_xpath(f"/html/body/center/table[2]/tbody/tr[{j}]/td[5]").text)
                 else:
                     t+=1
                 j+=1 
@@ -592,9 +602,11 @@ async def callback(c,ca):
     if text=="clasrom":
         liker=await c.send_message(ca.message.chat.id,"📥در حال دریافت...\nلطفا کمی صبر کنید")
         number_less=ca.data[7:]
+        code_darse=number_less.split("-")
+        name_ostad=get_name_ostad(code_darse[0],ca.message.chat.id)
         driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
         link_las=search_and_get_link(driver,ca.message.chat.id,number_less)
-        await c.send_message(ca.message.chat.id,f"▪لینک درس: {link_las}",reply_markup=InlineKeyboardMarkup(
+        await c.send_message(ca.message.chat.id,f"👨‍🎓 نام استاد: {name_ostad}\n🆔 کد درس: {code_darse[0]}\n💠گروه درس: {code_darse[1]}\n▪لینک درس: {link_las}",reply_markup=InlineKeyboardMarkup(
             [
                 [  # First row
                     InlineKeyboardButton(  # Generates a callback query when pressed
