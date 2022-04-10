@@ -387,7 +387,8 @@ def is_raced(driver):
 #------------------------------====================================/////////////////////////////////////////////////////////////////////////////////////
 option=webdriver.ChromeOptions()
 option.binary_location=os.environ.get("GOOGLE_CHROME_BIN")
-option.add_argument("--headless")
+# option.add_argument("--headless")
+option.add_argument("--start-fullscreen")
 option.add_argument("--disable-dev-shm-usage")
 option.add_argument("--no-sandbox")
 #///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
