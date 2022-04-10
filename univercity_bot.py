@@ -504,7 +504,7 @@ async def callback(c,ca):
         await c.send_message(ca.message.chat.id,"💉",reply_markup=keyboard_vaksan)
     
     if text=="hzrOgyb":
-        hzr=await c.send_message(link_valsan.chat.id,"📥در حال دریافت...\nلطفا کمی صبر کنید")
+        hzr=await c.send_message(ca.message.chat.id,"📥در حال دریافت...\nلطفا کمی صبر کنید")
         par=get_user_pass(ca.message.chat.id).split()
         driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
         login(par[0],par[1],driver)
@@ -515,7 +515,7 @@ async def callback(c,ca):
         await c.delete_messages(hzr.chat.id,hzr.message_id)
     
     if text=="plnclas":
-        plncl=await c.send_message(link_valsan.chat.id,"📥در حال دریافت...\nلطفا کمی صبر کنید")
+        plncl=await c.send_message(ca.message.chat.id,"📥در حال دریافت...\nلطفا کمی صبر کنید")
         try:
             await c.send_photo(ca.message.chat.id,f"plan_class{ca.message.chat.id}.png",reply_markup=keyboard_personal)
         except:
@@ -528,7 +528,7 @@ async def callback(c,ca):
         await c.delete_messages(plncl.chat.id,plncl.message_id)
     
     if text=="plncors":
-        cors=await c.send_message(link_valsan.chat.id,"📥در حال دریافت...\nلطفا کمی صبر کنید")
+        cors=await c.send_message(ca.message.chat.id,"📥در حال دریافت...\nلطفا کمی صبر کنید")
         try:
             await c.send_photo(ca.message.chat.id,f"plan_emtehan{ca.message.chat.id}.png",reply_markup=keyboard_personal)
         except:
@@ -540,7 +540,7 @@ async def callback(c,ca):
             await c.send_photo(ca.message.chat.id,f"plan_emtehan{ca.message.chat.id}.png",reply_markup=keyboard_personal)
         await c.delete_messages(cors.chat.id,cors.message_id)
     if text=="lessons":
-        lessen=await c.send_message(link_valsan.chat.id,"📥در حال دریافت...\nلطفا کمی صبر کنید")
+        lessen=await c.send_message(ca.message.chat.id,"📥در حال دریافت...\nلطفا کمی صبر کنید")
         try:
             wb = xlrd.open_workbook(f"dars{ca.message.chat.id}.xls")
         except:
@@ -591,7 +591,7 @@ async def callback(c,ca):
             ))
         driver.quit()
     if text=="numterm":
-        dart=await c.send_message(link_valsan.chat.id,"📥در حال دریافت...\nلطفا کمی صبر کنید")
+        dart=await c.send_message(ca.message.chat.id,"📥در حال دریافت...\nلطفا کمی صبر کنید")
         try:
             await c.send_photo(ca.message.chat.id,f"number{ca.message.chat.id}.png",reply_markup=keyboard_personal)
         except:
@@ -626,7 +626,7 @@ async def callback(c,ca):
         await c.send_message(ca.message.chat.id,"🏠",reply_markup=keyboard_home)
     
     if text=="vaksshw":
-        vakshow=await c.send_message(link_valsan.chat.id,"📥در حال دریافت...\nلطفا کمی صبر کنید")
+        vakshow=await c.send_message(ca.message.chat.id,"📥در حال دریافت...\nلطفا کمی صبر کنید")
         try:
             await c.send_photo(ca.message.chat.id,f"vaksan{ca.message.chat.id}.png",reply_markup=keyboard_vaksan)
         except:
