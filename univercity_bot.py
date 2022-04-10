@@ -435,7 +435,7 @@ async def start_user(c,m):
         file_user=open("all_user.txt","a",encoding="UTF-8")
         file_user.write(str(m.chat.id)+" ")
         file_user.close()
-    await m.reply("سلام دانشجوی گرامی ",reply_markup=keyboard_home)
+    await m.reply("سلام دانشجوی گرامی🖐\n✳با این ربات راحت تر و سریع تر به پورتالت دسترسی پیدا کن.",reply_markup=keyboard_home)
 
 @app.on_callback_query()
 async def callback(c,ca):
@@ -448,16 +448,16 @@ async def callback(c,ca):
         time=response["result"]["time"]
         date=response["result"]["date"]
         faawe=response["result"]["faweekname"]
-        await c.send_message(ca.message.chat.id,f"**ساعت**: {time}\n**تاریخ**: {date}\n{faawe}",reply_markup=keyboard_home)
+        await c.send_message(ca.message.chat.id,f"🕕**ساعت**: {time}\n📅**تاریخ**: {date}\n🗓{faawe}",reply_markup=keyboard_home)
     
     if text=="zoj_frd":
         tim=jdatetime.date.today().strftime("%Y-%m-%d")
         tadd=diffDate(tim,"1401-01-01")
         xer=tadd//7
         if xer%2!=0:
-            await c.send_message(ca.message.chat.id,"این هفته فرده.",reply_markup=keyboard_home)
+            await c.send_message(ca.message.chat.id,"📅این هفته **فرده!**",reply_markup=keyboard_home)
         else:
-            await c.send_message(ca.message.chat.id,"این هفته زوجه.",reply_markup=keyboard_home)
+            await c.send_message(ca.message.chat.id,"📅این هفته **زوجه!**.",reply_markup=keyboard_home)
             
     if text=="pnl_usr":
         file_list=open("logined.txt","r",encoding="UTF-8").read().split()
@@ -571,6 +571,7 @@ async def callback(c,ca):
         await c.delete_messages(lessen.chat.id,lessen.message_id)
              
     if text=="clasrom":
+        liker=await c.send_message(ca.message.chat.id,"📥در حال دریافت...\nلطفا کمی صبر کنید")
         number_less=ca.data[7:]
         driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
         link_las=search_and_get_link(driver,ca.message.chat.id,number_less)
@@ -589,6 +590,7 @@ async def callback(c,ca):
                 ]
             ]
             ))
+        await c.delete_messages(liker.chat.id,liker.message_id)
         driver.quit()
     if text=="numterm":
         dart=await c.send_message(ca.message.chat.id,"📥در حال دریافت...\nلطفا کمی صبر کنید")
@@ -649,11 +651,11 @@ async def callback(c,ca):
             par=get_user_pass(ca.message.chat.id).split()
             login(par[0],par[1],driver)
             await comit_vaksan(driver,link_vaksan.text,c,ca.message.chat.id)
-            await c.delete_messages(link_vaksan.chat.id,link_vaksan.message_id)
-            await c.delete_messages(link_vaksan.chat.id,link_vaksan.request.message_id)
-            await c.delete_messages(mes_nob.chat.id,mes_nob.message_id)
-            await c.delete_messages(ms.chat.id,ms.message_id)
             driver.quit()
+            await c.delete_messages(ms.chat.id,ms.message_id)
+        await c.delete_messages(link_vaksan.chat.id,link_vaksan.message_id)
+        await c.delete_messages(link_vaksan.chat.id,link_vaksan.request.message_id)
+        await c.delete_messages(mes_nob.chat.id,mes_nob.message_id)
     
     if text=="backpnl":
         await c.send_message(ca.message.chat.id,"👻",reply_markup=keyboard_personal)
