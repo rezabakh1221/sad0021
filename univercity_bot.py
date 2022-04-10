@@ -164,11 +164,13 @@ def exist_number(number):
             return i
     return -1
 def get_user_pass(number):
+    print(number)
     wb = xlrd.open_workbook("all_information.xls")
     sheet = wb.sheet_by_index(0)
     sheet.cell_value(0, 0)
     for i in range(sheet.nrows):
         p=sheet.row_values(i)
+        print(p)
         if int(number) == int(p[5]):
             return f"{p[2]} {p[4]}"
         
