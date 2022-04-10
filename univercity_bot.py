@@ -260,7 +260,7 @@ def emtehanat(driver,id):
     except:
         return 0
     
-async def number_do(driver,id,c):
+async def number_do(id,c,ca):
     try:
         text=""
         wb = xlrd.open_workbook(f"number_do{id}.xls")
@@ -268,48 +268,64 @@ async def number_do(driver,id,c):
         sheet.cell_value(0, 0)
         for i in range(sheet.nrows):
             p=sheet.row_values(i)
-            if len(p)>5:
-                text+=f"📝کد درس: {p[0]} ||| 📚نام درس: {p[1]} ||| 🔶تعداد واحد: {p[2]} ||| 👨‍🎓استاد: {p[3]} ||| ❇نمره: {p[4]} ||| 🔴وضعیت نمره: {p[5]} ||| 📋شماره لیست نمره: {p[6]} ||| ❇وضعیت لیست نمره: {p[7]}\n➖➖\n"
+            if i<sheet.nrows-1:
+                text+=f"📝کد درس: {p[0]} \n 📚نام درس: {p[1]} \n 🔶تعداد واحد: {p[2]} \n 👨‍🎓استاد: {p[3]} \n ❇نمره: {p[4]} \n 🔴وضعیت نمره: {p[5]} \n 📋شماره لیست نمره: {p[6]} \n ❇وضعیت لیست نمره: {p[7]}\n➖➖\n"
             else:
-                text+=f"🔲{p[0]}: {p[1]} ||| 📜{p[2]}: {p[3]}"
-        await c.send_message(id,text,reply_markup=keyboard_kansel)
+                text+=f"🔲{p[0]}: {p[1]} \n 📜{p[2]}: {p[3]}"
+        await c.send_message(id,text,reply_markup=keyboard_personal)
     except:
+        # driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
+        driver=webdriver.Chrome(executable_path="C:\\Users\\reza bakh12\\Desktop\\learning\\selenium\\chromedriver",chrome_options=option)
+        par=get_user_pass(ca.message.chat.id).split()
+        driver.maximize_window()
+        login(par[0],par[1],driver)
         driver.get("https://puya.kashmar.ac.ir/educ/educfac/stuShowEducationalLogFromGradeList.php")
         time.sleep(1)
-        tr=driver.find_elements_by_tag_name("table")
-        trr=tr[1].find_elements_by_tag_name("tr")
-        htm=2
+        tr=driver.find_elements_by_xpath("/html/body/center/table/tbody")
+        trr=tr[0].find_elements_by_tag_name("tr")
+        g=1
+        htm=0
         workbook = xlsxwriter.Workbook(f"number_do{id}.xls")
         worksheet = workbook.add_worksheet()
-        f=0
-        le=len(trr)-1
         for i in trr:
-            worksheet.write(f'A{f}',driver.find_element_by_xpath(f"/html/body/center/table[1]/tbody/tr[{htm}]/td[2]").text)
-            worksheet.write(f'B{f}',driver.find_element_by_xpath(f"/html/body/center/table[1]/tbody/tr[{htm}]/td[3]").text)
-            worksheet.write(f'C{f}',driver.find_element_by_xpath(f"/html/body/center/table[1]/tbody/tr[{htm}]/td[4]").text)
-            worksheet.write(f'D{f}',driver.find_element_by_xpath(f"/html/body/center/table[1]/tbody/tr[{htm}]/td[5]").text)
-            worksheet.write(f'E{f}',driver.find_element_by_xpath(f"/html/body/center/table[1]/tbody/tr[{htm}]/td[6]").text)
-            worksheet.write(f'F{f}',driver.find_element_by_xpath(f"/html/body/center/table[1]/tbody/tr[{htm}]/td[7]").text)
-            worksheet.write(f'G{f}',driver.find_element_by_xpath(f"/html/body/center/table[1]/tbody/tr[{htm}]/td[8]").text)
-            worksheet.write(f'H{f}',driver.find_element_by_xpath(f"/html/body/center/table[1]/tbody/tr[{htm}]/td[9]").text)
-            f+=1
-            htm+=2
-        worksheet.write(f'A{f}',driver.find_element_by_xpath(f"/html/body/center/table[1]/tbody/tr[{le}]/td[1]").text)
-        worksheet.write(f'B{f}',driver.find_element_by_xpath(f"/html/body/center/table[1]/tbody/tr[{le}]/td[2]").text)
-        worksheet.write(f'C{f}',driver.find_element_by_xpath(f"/html/body/center/table[1]/tbody/tr[{le}]/td[3]").text)
-        worksheet.write(f'D{f}',driver.find_element_by_xpath(f"/html/body/center/table[1]/tbody/tr[{le}]/td[4]").text)
+            try:
+                if int(driver.find_element_by_xpath(f"/html/body/center/table/tbody/tr[{g}]/td[1]").text)==1:
+                    htm=g
+                    break
+            except:
+                g+=1
+        f=1
+        le=len(trr)
+        print(le,htm)
+        for i in trr:
+            if htm<=le:
+                worksheet.write(f'A{f}',driver.find_element_by_xpath(f"/html/body/center/table/tbody/tr[{htm}]/td[2]").text)
+                worksheet.write(f'B{f}',driver.find_element_by_xpath(f"/html/body/center/table/tbody/tr[{htm}]/td[3]").text)
+                worksheet.write(f'C{f}',driver.find_element_by_xpath(f"/html/body/center/table/tbody/tr[{htm}]/td[4]").text)
+                worksheet.write(f'D{f}',driver.find_element_by_xpath(f"/html/body/center/table/tbody/tr[{htm}]/td[5]").text)
+                worksheet.write(f'E{f}',driver.find_element_by_xpath(f"/html/body/center/table/tbody/tr[{htm}]/td[6]").text)
+                worksheet.write(f'F{f}',driver.find_element_by_xpath(f"/html/body/center/table/tbody/tr[{htm}]/td[7]").text)
+                worksheet.write(f'G{f}',driver.find_element_by_xpath(f"/html/body/center/table/tbody/tr[{htm}]/td[8]").text)
+                worksheet.write(f'H{f}',driver.find_element_by_xpath(f"/html/body/center/table/tbody/tr[{htm}]/td[9]").text)
+                f+=1
+                htm+=2
+        worksheet.write(f'A{f}',driver.find_element_by_xpath(f"/html/body/center/table/tbody/tr[{le}]/td[1]").text)
+        worksheet.write(f'B{f}',driver.find_element_by_xpath(f"/html/body/center/table/tbody/tr[{le}]/td[2]").text)
+        worksheet.write(f'C{f}',driver.find_element_by_xpath(f"/html/body/center/table/tbody/tr[{le}]/td[3]").text)
+        worksheet.write(f'D{f}',driver.find_element_by_xpath(f"/html/body/center/table/tbody/tr[{le}]/td[4]").text)
         workbook.close()
+        driver.quit()
         text=""
         wb = xlrd.open_workbook(f"number_do{id}.xls")
         sheet = wb.sheet_by_index(0)
         sheet.cell_value(0, 0)
         for i in range(sheet.nrows):
             p=sheet.row_values(i)
-            if len(p)>5:
-                text+=f"📝کد درس: {p[0]} ||| 📚نام درس: {p[1]} ||| 🔶تعداد واحد: {p[2]} ||| 👨‍🎓استاد: {p[3]} ||| ❇نمره: {p[4]} ||| 🔴وضعیت نمره: {p[5]} ||| 📋شماره لیست نمره: {p[6]} ||| ❇وضعیت لیست نمره: {p[7]}\n➖➖\n"
+            if i<sheet.nrows-1:
+                text+=f"📝کد درس: {p[0]} \n 📚نام درس: {p[1]} \n 🔶تعداد واحد: {p[2]} \n 👨‍🎓استاد: {p[3]} \n ❇نمره: {p[4]} \n 🔴وضعیت نمره: {p[5]} \n 📋شماره لیست نمره: {p[6]} \n ❇وضعیت لیست نمره: {p[7]}\n➖➖\n"
             else:
-                text+=f"🔲{p[0]}: {p[1]} ||| 📜{p[2]}: {p[3]}"
-        await c.send_message(id,text,reply_markup=keyboard_kansel)
+                text+=f"🔲{p[0]}: {p[1]} \n 📜{p[2]}: {p[3]}"
+        await c.send_message(id,text,reply_markup=keyboard_personal)
     
 def hozore(driver,id):
     try:
@@ -428,7 +444,8 @@ def is_raced(driver):
         return 0
 #------------------------------====================================/////////////////////////////////////////////////////////////////////////////////////
 option=webdriver.ChromeOptions()
-option.binary_location=os.environ.get("GOOGLE_CHROME_BIN")
+# option.binary_location=os.environ.get("GOOGLE_CHROME_BIN")
+option.binary_location="C:\Program Files\Google\Chrome\Application\chrome.exe"
 option.add_argument("--headless")
 option.add_argument("--disable-dev-shm-usage")
 option.add_argument("--no-sandbox")
@@ -542,7 +559,9 @@ async def callback(c,ca):
                 else:
                     sinn=1
                     khosh=await c.send_message(password.chat.id,"📥در حال گرفتن اطلاعات لطفا صبور باشید")
-                    driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
+                    # driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
+                    driver=webdriver.Chrome(executable_path="C:\\Users\\reza bakh12\\Desktop\\learning\\selenium\\chromedriver",chrome_options=option)
+                    
                     driver.maximize_window()
                     if login(username.text,password.text,driver)==1:
                         if get_information(driver,username.text,password.text,ca)==1:
@@ -578,7 +597,9 @@ async def callback(c,ca):
     if text=="hzrOgyb":
         hzr=await c.send_message(ca.message.chat.id,"📥در حال دریافت...\nلطفا کمی صبر کنید")
         par=get_user_pass(ca.message.chat.id).split()
-        driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
+        # driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
+        driver=webdriver.Chrome(executable_path="C:\\Users\\reza bakh12\\Desktop\\learning\\selenium\\chromedriver",chrome_options=option)
+
         driver.maximize_window()
         login(par[0],par[1],driver)
         hozore(driver,ca.message.chat.id)
@@ -593,7 +614,9 @@ async def callback(c,ca):
             await c.send_photo(ca.message.chat.id,f"plan_class{ca.message.chat.id}.png",reply_markup=keyboard_personal)
         except:
             par=get_user_pass(ca.message.chat.id).split()
-            driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
+            # driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
+            driver=webdriver.Chrome(executable_path="C:\\Users\\reza bakh12\\Desktop\\learning\\selenium\\chromedriver",chrome_options=option)
+            
             driver.maximize_window()
             login(par[0],par[1],driver)
             plan_class(driver,ca.message.chat.id)
@@ -607,7 +630,9 @@ async def callback(c,ca):
             await c.send_photo(ca.message.chat.id,f"plan_emtehan{ca.message.chat.id}.png",reply_markup=keyboard_personal)
         except:
             par=get_user_pass(ca.message.chat.id).split()
-            driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
+            # driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
+            driver=webdriver.Chrome(executable_path="C:\\Users\\reza bakh12\\Desktop\\learning\\selenium\\chromedriver",chrome_options=option)
+            
             driver.maximize_window()
             login(par[0],par[1],driver)
             emtehanat(driver,ca.message.chat.id)
@@ -620,7 +645,9 @@ async def callback(c,ca):
             wb = xlrd.open_workbook(f"dars{ca.message.chat.id}.xls")
         except:
             par=get_user_pass(ca.message.chat.id).split()
-            driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
+            # driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
+            driver=webdriver.Chrome(executable_path="C:\\Users\\reza bakh12\\Desktop\\learning\\selenium\\chromedriver",chrome_options=option)
+            
             driver.maximize_window()
             login(par[0],par[1],driver)
             darss(driver,ca.message.chat.id)
@@ -651,7 +678,9 @@ async def callback(c,ca):
         number_less=ca.data[7:]
         code_darse=number_less.split("-")
         name_ostad=get_name_ostad(code_darse[0],ca.message.chat.id)
-        driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
+        # driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
+        driver=webdriver.Chrome(executable_path="C:\\Users\\reza bakh12\\Desktop\\learning\\selenium\\chromedriver",chrome_options=option)
+        
         driver.maximize_window()
         link_las=search_and_get_link(driver,ca.message.chat.id,number_less)
         await c.send_message(ca.message.chat.id,f"👨‍🎓 نام استاد: {name_ostad}\n🆔 کد درس: {code_darse[0]}\n💠گروه درس: {code_darse[1]}\n▪لینک درس: {link_las}",reply_markup=InlineKeyboardMarkup(
@@ -673,12 +702,7 @@ async def callback(c,ca):
         driver.quit()
     if text=="numterm":
         dart=await c.send_message(ca.message.chat.id,"📥در حال دریافت...\nلطفا کمی صبر کنید")
-        par=get_user_pass(ca.message.chat.id).split()
-        driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
-        driver.maximize_window()
-        login(par[0],par[1],driver)
-        await number_do(driver,ca.message.chat.id,c)
-        driver.quit()
+        await number_do(ca.message.chat.id,c,ca)
         await c.delete_messages(dart.chat.id,dart.message_id)
         
     if text=="updinfo":
@@ -687,7 +711,9 @@ async def callback(c,ca):
             await c.send_message(ca.message.chat.id,"❌شما تا کنون وارد نشده اید.\n💥برای استفاده از پنل کاربری ابتدا با استفاده از دکمه پنل کاربری وارد شوید شوید.",reply_markup=keyboard_personal)
         else:
             mes_job=await c.send_message(ca.message.chat.id,"♻در حال گرفتن اطلاعات لطفا صبور باشید")
-            driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
+            # driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
+            driver=webdriver.Chrome(executable_path="C:\\Users\\reza bakh12\\Desktop\\learning\\selenium\\chromedriver",chrome_options=option)
+            
             driver.maximize_window()
             login(par[0],par[1],driver)
             get_information(driver,par[0],par[1],ca)
@@ -710,7 +736,9 @@ async def callback(c,ca):
             await c.send_photo(ca.message.chat.id,f"vaksan{ca.message.chat.id}.png",reply_markup=keyboard_vaksan)
         except:
             par=get_user_pass(ca.message.chat.id).split()
-            driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
+            # driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
+            driver=webdriver.Chrome(executable_path="C:\\Users\\reza bakh12\\Desktop\\learning\\selenium\\chromedriver",chrome_options=option)
+            
             driver.maximize_window()
             login(par[0],par[1],driver)
             vaksan(driver,ca.message.chat.id)
@@ -725,7 +753,9 @@ async def callback(c,ca):
             await c.send_message(ca.message.chat.id,"👻",reply_markup=keyboard_personal)
         else:
             ms=await c.send_message(link_vaksan.chat.id,"📤در حال بارگزاری...\nلطفا کمی صبر کنید")
-            driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
+            # driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
+            driver=webdriver.Chrome(executable_path="C:\\Users\\reza bakh12\\Desktop\\learning\\selenium\\chromedriver",chrome_options=option)
+            
             driver.maximize_window()
             par=get_user_pass(ca.message.chat.id).split()
             login(par[0],par[1],driver)
@@ -742,7 +772,9 @@ async def callback(c,ca):
     if text=="claszbt":
         number_les=ca.data[7:]
         maseg_class=await c.send_message(ca.message.chat.id,"📥در حال دریافت لیست.\nلطفا کمی منتظر بمانید.")
-        driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
+        # driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
+        driver=webdriver.Chrome(executable_path="C:\\Users\\reza bakh12\\Desktop\\learning\\selenium\\chromedriver",chrome_options=option)
+        
         driver.maximize_window()
         await get_link_recorded(driver,ca.message.chat.id,c,number_les)
         driver.quit()
