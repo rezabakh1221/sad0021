@@ -476,18 +476,21 @@ async def callback(c,ca):
                 if password.text=="/cancel":
                     await c.send_message(ca.message.chat.id,"🏠",reply_markup=keyboard_home)
                 else:
+                    sinn=1
                     khosh=await c.send_message(password.chat.id,"📥در حال گرفتن اطلاعات اطفا صبور باشید")
-                    try:
-                        driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
-                        login(username.text,password.text,driver)
-                        get_information(driver,username.text,password.text,ca)
-                        driver.quit()
-                        file_login=open("logined.txt","a",encoding="UTF-8")
-                        file_login.write(str(ca.message.chat.id)+" ")
-                        file_login.close()
-                        await c.send_message(password.chat.id,"✅دریافت اطلاعات کامل شد",reply_markup=keyboard_personal)
-                    
-                    except:
+                    driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
+                    if login(username.text,password.text,driver)==1:
+                        if get_information(driver,username.text,password.text,ca)==1:
+                            await c.send_message(password.chat.id,"✅دریافت اطلاعات کامل شد",reply_markup=keyboard_personal)
+                            file_login=open("logined.txt","a",encoding="UTF-8")
+                            file_login.write(str(ca.message.chat.id)+" ")
+                            file_login.close()
+                        else:
+                            s=0
+                    else:
+                        s=0
+                    driver.quit()
+                    if s==0:
                         await c.send_message(password.chat.id,"❌پسوورد اشتباه است به منو اصلی باز میگردید",reply_markup=keyboard_home)
                     await c.delete_messages(khosh.chat.id,khosh.message_id)
         
