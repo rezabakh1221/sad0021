@@ -466,15 +466,18 @@ async def callback(c,ca):
             await c.send_message(ca.message.chat.id,"👻",reply_markup=keyboard_personal)
         else:
             username=await c.ask(ca.message.chat.id,"❌شما تا کنون وارد نشده اید.\n💥برای استفاده از پنل کاربری ابتدا **وارد**  شوید.\n✔برای ورود لطفا ابتدا شماره دانشجویی خود را به لاتین ارسال کنید\n🔙برای بازگشت به منو اصلی از دستور /cancel استفاده کنید.")
+            await c.delete_messages(username.chat.id,username.message_id)
+            await c.delete_messages(username.chat.id,username.request.message_id)
             if username.text=="/cancel":
                 await c.send_message(ca.message.chat.id,"🏠",reply_markup=keyboard_home)
             else:
                 password=await c.ask(username.chat.id,"🗄لطفا پسوورد خود را ارسال کنید:\n✔برای برگشت به منو اصلی دستور /cancel را ارسال کنید")
+                await c.delete_messages(password.chat.id,password.message_id)
+                await c.delete_messages(password.chat.id,password.request.message_id)
                 if password.text=="/cancel":
                     await c.send_message(ca.message.chat.id,"🏠",reply_markup=keyboard_home)
                 else:
                     khosh=await c.send_message(password.chat.id,"📥در حال گرفتن اطلاعات اطفا صبور باشید")
-                    await c.send_message(password.chat.id,password)
                     try:
                         driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
                         login(username.text,password.text,driver)
@@ -596,21 +599,19 @@ async def callback(c,ca):
         if len(par)==0:
             await c.send_message(ca.message.chat.id,"❌شما تا کنون وارد نشده اید.\n💥برای استفاده از پنل کاربری ابتدا با استفاده از دکمه پنل کاربری وارد شوید شوید.",reply_markup=keyboard_personal)
         else:
-            await c.send_message(ca.message.chat.id,"♻در حال گرفتن اطلاعات اطفا صبور باشید")
-            try:
-                driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
-                login(par[0],par[1],driver)
-                get_information(driver,par[0],ca)
-                hozore(driver,ca.message.chat.id)
-                plan_class(driver,ca.message.chat.id)
-                vaksan(driver,ca.message.chat.id)
-                darss(driver,ca.message.chat.id)
-                emtehanat(driver,ca.message.chat.id)
-                number_do(driver,ca.message.chat.id)
-                driver.quit()
-                await c.send_message(ca.message.chat.id,"✅دریافت اطلاعات کامل شد",reply_markup=keyboard_personal)
-            except:
-                await c.send_message(ca.message.chat.id,"❌پسوورد اشتباه است به منو اصلی باز میگردید",reply_markup=keyboard_home)
+            mes_job=await c.send_message(ca.message.chat.id,"♻در حال گرفتن اطلاعات اطفا صبور باشید")
+            driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
+            login(par[0],par[1],driver)
+            get_information(driver,par[0],ca)
+            hozore(driver,ca.message.chat.id)
+            plan_class(driver,ca.message.chat.id)
+            vaksan(driver,ca.message.chat.id)
+            darss(driver,ca.message.chat.id)
+            emtehanat(driver,ca.message.chat.id)
+            number_do(driver,ca.message.chat.id)
+            driver.quit()
+            await c.send_message(ca.message.chat.id,"✅دریافت اطلاعات کامل شد",reply_markup=keyboard_personal)
+            await c.delete_messages(mes_job.chat.id,mes_job.message_id)
     
     if text=="backhom":
         await c.send_message(ca.message.chat.id,"🏠",reply_markup=keyboard_home)
@@ -627,7 +628,7 @@ async def callback(c,ca):
             await c.send_photo(ca.message.chat.id,f"vaksan{ca.message.chat.id}.png",reply_markup=keyboard_vaksan)
     
     if text=="vakssbt":
-        await c.send_message(ca.message.chat.id,"سلام خوش امدید\nبرای برگشت به پنل کاربری از دستور /cancel استفاده کنید")
+        mes_nob=await c.send_message(ca.message.chat.id,"🖐سلام به بخش ثبت کارت دیجیتال واکسناسیون💉 خوش امدید\n🔙برای برگشت به پنل کاربری از دستور /cancel استفاده کنید")
         link_vaksan=await c.ask(ca.message.chat.id,"برای ثبت کارت ئاکسن دیجیتال خود در سایت دانشگاه لطفا لینک ارسال شده از سایت سلامت را ارسال کنید.\nنمونه لینک:\nvaccinecard.salamat.gov.ir/a69f83a2127560414da948cd8603db1f0***")
         if link_vaksan.text=="/cancel":
             await c.send_message(ca.message.chat.id,"👻",reply_markup=keyboard_personal)
@@ -636,10 +637,12 @@ async def callback(c,ca):
             par=get_user_pass(ca.message.chat.id).split()
             login(par[0],par[1],driver)
             await comit_vaksan(driver,link_vaksan.text,c,ca.message.chat.id)
+            await c.delete_messages(link_vaksan.chat.id,link_vaksan.message_id)
+            await c.delete_messages(link_vaksan.chat.id,link_vaksan.request.message_id)
+            await c.delete_messages(mes_nob.chat.id,mes_nob.message_id)
             driver.quit()
     
     if text=="backpnl":
-        us=get_name_family(ca.message.chat.id)
         await c.send_message(ca.message.chat.id,"👻",reply_markup=keyboard_personal)
     
     if text=="claszbt":
