@@ -474,7 +474,7 @@ async def callback(c,ca):
                     await c.send_message(ca.message.chat.id,"🏠",reply_markup=keyboard_home)
                 else:
                     khosh=await c.send_message(password.chat.id,"📥در حال گرفتن اطلاعات اطفا صبور باشید")
-                    await c.send_message(password.chat.id,khosh)
+                    await c.send_message(password.chat.id,password)
                     try:
                         driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
                         login(username.text,password.text,driver)
@@ -487,7 +487,7 @@ async def callback(c,ca):
                     
                     except:
                         await c.send_message(password.chat.id,"❌پسوورد اشتباه است به منو اصلی باز میگردید",reply_markup=keyboard_home)
-                    # await c.delete_messages(khosh.chat.id,khosh.message_id)
+                    await c.delete_messages(khosh.chat.id,khosh.message_id)
         
     if text=="taghams":
         await c.send_photo(ca.message.chat.id,"taghams.jpg",reply_markup=keyboard_home)
