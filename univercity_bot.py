@@ -483,16 +483,16 @@ async def callback(c,ca):
                     driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
                     print(login(username.text,password.text,driver),get_information(driver,username.text,password.text,ca))
                     if login(username.text,password.text,driver)==0:
-                        s=0
+                        sinn=0
                     if get_information(driver,username.text,password.text,ca)==0:
-                        s=0
-                    if s==1:
+                        sinn=0
+                    if sinn==1:
                         await c.send_message(password.chat.id,"✅دریافت اطلاعات کامل شد",reply_markup=keyboard_personal)
                         file_login=open("logined.txt","a",encoding="UTF-8")
                         file_login.write(str(ca.message.chat.id)+" ")
                         file_login.close()
-                    if s==0:
-                        await c.send_message(password.chat.id,"اطلاعات ورود اشتباه است به منو اصلی باز میگردید",reply_markup=keyboard_home)
+                    if sinn==0:
+                        await c.send_message(password.chat.id,"❌اطلاعات ورود اشتباه است به منو اصلی باز میگردید‼",reply_markup=keyboard_home)
                     driver.quit()
                     await c.delete_messages(khosh.chat.id,khosh.message_id)
         
