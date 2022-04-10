@@ -277,29 +277,27 @@ async def number_do(driver,id,c):
         driver.get("https://puya.kashmar.ac.ir/educ/educfac/stuShowEducationalLogFromGradeList.php")
         time.sleep(1)
         tr=driver.find_elements_by_tag_name("table")
-        htm=1
+        trr=tr[1].find_elements_by_tag_name("tr")
+        htm=2
         workbook = xlsxwriter.Workbook(f"number_do{id}.xls")
         worksheet = workbook.add_worksheet()
         f=0
-        le=len(tr)
-        print(le)
-        for i in tr[0]:
-            if htm<le:
-                worksheet.write(f'A{f}',driver.find_element_by_xpath(f"/html/body/center/table[1]/tbody/tr[{htm}]/td[2]").text)
-                worksheet.write(f'B{f}',driver.find_element_by_xpath(f"/html/body/center/table[1]/tbody/tr[{htm}]/td[3]").text)
-                worksheet.write(f'C{f}',driver.find_element_by_xpath(f"/html/body/center/table[1]/tbody/tr[{htm}]/td[4]").text)
-                worksheet.write(f'D{f}',driver.find_element_by_xpath(f"/html/body/center/table[1]/tbody/tr[{htm}]/td[5]").text)
-                worksheet.write(f'E{f}',driver.find_element_by_xpath(f"/html/body/center/table[1]/tbody/tr[{htm}]/td[6]").text)
-                worksheet.write(f'F{f}',driver.find_element_by_xpath(f"/html/body/center/table[1]/tbody/tr[{htm}]/td[7]").text)
-                worksheet.write(f'G{f}',driver.find_element_by_xpath(f"/html/body/center/table[1]/tbody/tr[{htm}]/td[8]").text)
-                worksheet.write(f'H{f}',driver.find_element_by_xpath(f"/html/body/center/table[1]/tbody/tr[{htm}]/td[9]").text)
-            if htm==le:
-                worksheet.write(f'A{f}',driver.find_element_by_xpath(f"/html/body/center/table[1]/tbody/tr[{htm}]/td[1]").text)
-                worksheet.write(f'B{f}',driver.find_element_by_xpath(f"/html/body/center/table[1]/tbody/tr[{htm}]/td[2]").text)
-                worksheet.write(f'C{f}',driver.find_element_by_xpath(f"/html/body/center/table[1]/tbody/tr[{htm}]/td[3]").text)
-                worksheet.write(f'D{f}',driver.find_element_by_xpath(f"/html/body/center/table[1]/tbody/tr[{htm}]/td[4]").text)
+        le=len(tr)-1
+        for i in trr:
+            worksheet.write(f'A{f}',driver.find_element_by_xpath(f"/html/body/center/table[1]/tbody/tr[{htm}]/td[2]").text)
+            worksheet.write(f'B{f}',driver.find_element_by_xpath(f"/html/body/center/table[1]/tbody/tr[{htm}]/td[3]").text)
+            worksheet.write(f'C{f}',driver.find_element_by_xpath(f"/html/body/center/table[1]/tbody/tr[{htm}]/td[4]").text)
+            worksheet.write(f'D{f}',driver.find_element_by_xpath(f"/html/body/center/table[1]/tbody/tr[{htm}]/td[5]").text)
+            worksheet.write(f'E{f}',driver.find_element_by_xpath(f"/html/body/center/table[1]/tbody/tr[{htm}]/td[6]").text)
+            worksheet.write(f'F{f}',driver.find_element_by_xpath(f"/html/body/center/table[1]/tbody/tr[{htm}]/td[7]").text)
+            worksheet.write(f'G{f}',driver.find_element_by_xpath(f"/html/body/center/table[1]/tbody/tr[{htm}]/td[8]").text)
+            worksheet.write(f'H{f}',driver.find_element_by_xpath(f"/html/body/center/table[1]/tbody/tr[{htm}]/td[9]").text)
             f+=1
-            htm+=1
+            htm+=2
+        worksheet.write(f'A{f}',driver.find_element_by_xpath(f"/html/body/center/table[1]/tbody/tr[{le}]/td[1]").text)
+        worksheet.write(f'B{f}',driver.find_element_by_xpath(f"/html/body/center/table[1]/tbody/tr[{le}]/td[2]").text)
+        worksheet.write(f'C{f}',driver.find_element_by_xpath(f"/html/body/center/table[1]/tbody/tr[{le}]/td[3]").text)
+        worksheet.write(f'D{f}',driver.find_element_by_xpath(f"/html/body/center/table[1]/tbody/tr[{le}]/td[4]").text)
         workbook.close()
         text=""
         wb = xlrd.open_workbook(f"number_do{id}.xls")
