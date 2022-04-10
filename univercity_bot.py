@@ -320,12 +320,16 @@ def darss(driver,id):
         return 0
     
 def login(user,pas,driver):
-    driver.get("https://puya.kashmar.ac.ir/gateway/PuyaAuthenticate.php")
-    driver.find_element_by_name("UserID").send_keys(user)
-    driver.find_element_by_name("DummyVar").send_keys(pas)
-    driver.find_element_by_css_selector("input[type=\"submit\"]").click()
-    time.sleep(1)
-    
+    try:
+        driver.get("https://puya.kashmar.ac.ir/gateway/PuyaAuthenticate.php")
+        driver.find_element_by_name("UserID").send_keys(user)
+        driver.find_element_by_name("DummyVar").send_keys(pas)
+        driver.find_element_by_css_selector("input[type=\"submit\"]").click()
+        time.sleep(1)
+        return 1
+    except:
+        return 0
+        
 def get_information(driver,user,password,ca):
     num=exist_number(user)
     if num==-1:
@@ -354,11 +358,11 @@ def get_information(driver,user,password,ca):
             list_p.append(password)
             list_p.append(ca.message.chat.id)
             change_and_save(list_p)
+            return 1
         except:
-            pass
+            return 0
     else:
-        names=get_name_family(user)
-        return names
+        pass
 
 #------------------------------====================================/////////////////////////////////////////////////////////////////////////////////////
 option=webdriver.ChromeOptions()
