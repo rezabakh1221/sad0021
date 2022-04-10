@@ -364,7 +364,7 @@ def get_information(driver,user,password,ca):
     else:
         pass
 
-def is_raced(driver,user,password):
+def is_raced(driver):
     try:
         url="https://puya.kashmar.ac.ir/gateway/PuyaMainFrame.php"
         driver.get(url) 
@@ -491,10 +491,10 @@ async def callback(c,ca):
                     sinn=1
                     khosh=await c.send_message(password.chat.id,"📥در حال گرفتن اطلاعات لطفا صبور باشید")
                     driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
-                    print(login(username.text,password.text,driver),get_information(driver,username.text,password.text,ca))
                     if login(username.text,password.text,driver)==1:
                         if get_information(driver,username.text,password.text,ca)==1:
-                            if is_raced(driver,username.text,password.text)==-1:
+                            if is_raced(driver)==-1:
+                                print(is_raced(driver))
                                 await c.send_message(password.chat.id,"✅دریافت اطلاعات کامل شد",reply_markup=keyboard_personal)
                                 file_login=open("logined.txt","a",encoding="UTF-8")
                                 file_login.write(str(ca.message.chat.id)+" ")
