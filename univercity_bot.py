@@ -282,7 +282,7 @@ async def number_do(driver,id,c):
         workbook = xlsxwriter.Workbook(f"number_do{id}.xls")
         worksheet = workbook.add_worksheet()
         f=0
-        le=len(tr)-1
+        le=len(trr)-1
         for i in trr:
             worksheet.write(f'A{f}',driver.find_element_by_xpath(f"/html/body/center/table[1]/tbody/tr[{htm}]/td[2]").text)
             worksheet.write(f'B{f}',driver.find_element_by_xpath(f"/html/body/center/table[1]/tbody/tr[{htm}]/td[3]").text)
