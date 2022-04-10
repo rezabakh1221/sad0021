@@ -212,9 +212,6 @@ async def get_link_recorded(driver,id,c,number):
     if len(ol)==0:
         await c.send_message(id,"❌هنوز کلاس ضبط شده ای ثبت نشده است")
     else:
-        xx=ol[0].text.find("-")
-        yy=ol[0].text.find("-",xx+1)
-        name=ol[0].text[xx+1:yy]
         for j in ol:
             find=j.text.find(" تاریخ")
             title=j.text[:find]
@@ -235,7 +232,7 @@ async def get_link_recorded(driver,id,c,number):
                         )
                     ]
                 )
-        await c.send_message(id,f"👨‍🎓 نام استاد: {name}",parse_mode="markdown",reply_markup=InlineKeyboardMarkup(list_record))
+        await c.send_message(id,"🎞",parse_mode="markdown",reply_markup=InlineKeyboardMarkup(list_record))
 #----------------------------------------------------------------------------------------------------
 def plan_class(driver,id):
     try:
@@ -507,6 +504,7 @@ async def callback(c,ca):
         await c.send_message(ca.message.chat.id,"💉",reply_markup=keyboard_vaksan)
     
     if text=="hzrOgyb":
+        hzr=await c.send_message(link_valsan.chat.id,"📥در حال دریافت...\nلطفا کمی صبر کنید")
         par=get_user_pass(ca.message.chat.id).split()
         driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
         login(par[0],par[1],driver)
@@ -514,8 +512,10 @@ async def callback(c,ca):
         driver.quit()
         await c.send_photo(ca.message.chat.id,f"hozor{ca.message.chat.id}.png",reply_markup=keyboard_personal)
         os.remove(f"hozor{ca.message.chat.id}.png")
+        await c.delete_messages(hzr.chat.id,hzr.message_id)
     
     if text=="plnclas":
+        plncl=await c.send_message(link_valsan.chat.id,"📥در حال دریافت...\nلطفا کمی صبر کنید")
         try:
             await c.send_photo(ca.message.chat.id,f"plan_class{ca.message.chat.id}.png",reply_markup=keyboard_personal)
         except:
@@ -525,8 +525,10 @@ async def callback(c,ca):
             plan_class(driver,ca.message.chat.id)
             driver.quit()
             await c.send_photo(ca.message.chat.id,f"plan_class{ca.message.chat.id}.png",reply_markup=keyboard_personal)
+        await c.delete_messages(plncl.chat.id,plncl.message_id)
     
     if text=="plncors":
+        cors=await c.send_message(link_valsan.chat.id,"📥در حال دریافت...\nلطفا کمی صبر کنید")
         try:
             await c.send_photo(ca.message.chat.id,f"plan_emtehan{ca.message.chat.id}.png",reply_markup=keyboard_personal)
         except:
@@ -536,11 +538,13 @@ async def callback(c,ca):
             emtehanat(driver,ca.message.chat.id)
             driver.quit()
             await c.send_photo(ca.message.chat.id,f"plan_emtehan{ca.message.chat.id}.png",reply_markup=keyboard_personal)
-    
+        await c.delete_messages(cors.chat.id,cors.message_id)
     if text=="lessons":
+        lessen=await c.send_message(link_valsan.chat.id,"📥در حال دریافت...\nلطفا کمی صبر کنید")
         try:
             wb = xlrd.open_workbook(f"dars{ca.message.chat.id}.xls")
         except:
+            par=get_user_pass(ca.message.chat.id).split()
             driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
             login(par[0],par[1],driver)
             darss(driver,ca.message.chat.id)
@@ -550,11 +554,11 @@ async def callback(c,ca):
         sheet = wb.sheet_by_index(0)
         sheet.cell_value(0, 0)
         for i in range(sheet.nrows):
-            p=sheet.row_values(i)
+            pof=sheet.row_values(i)
             list_key.append([  # First row
                     InlineKeyboardButton(  # Generates a callback query when pressed
-                        f"📚{p[0]}",
-                        callback_data=f"clasrom{p[1]}-{p[2]}"
+                        f"📚{pof[0]}",
+                        callback_data=f"clasrom{pof[1]}-{pof[2]}"
                     )
                 ])
         list_key.append([  # First row
@@ -564,6 +568,7 @@ async def callback(c,ca):
                     )
                 ])
         await c.send_message(ca.message.chat.id,"📁",reply_markup=InlineKeyboardMarkup(list_key))
+        await c.delete_messages(lessen.chat.id,lessen.message_id)
              
     if text=="clasrom":
         number_less=ca.data[7:]
@@ -586,6 +591,7 @@ async def callback(c,ca):
             ))
         driver.quit()
     if text=="numterm":
+        dart=await c.send_message(link_valsan.chat.id,"📥در حال دریافت...\nلطفا کمی صبر کنید")
         try:
             await c.send_photo(ca.message.chat.id,f"number{ca.message.chat.id}.png",reply_markup=keyboard_personal)
         except:
@@ -595,6 +601,7 @@ async def callback(c,ca):
             number_do(driver,ca.message.chat.id)
             driver.quit()
             await c.send_photo(ca.message.chat.id,f"number{ca.message.chat.id}.png",reply_markup=keyboard_personal)
+        await c.delete_messages(dart.chat.id,dart.message_id)
         
     if text=="updinfo":
         par=get_user_pass(ca.message.chat.id).split()
@@ -619,6 +626,7 @@ async def callback(c,ca):
         await c.send_message(ca.message.chat.id,"🏠",reply_markup=keyboard_home)
     
     if text=="vaksshw":
+        vakshow=await c.send_message(link_valsan.chat.id,"📥در حال دریافت...\nلطفا کمی صبر کنید")
         try:
             await c.send_photo(ca.message.chat.id,f"vaksan{ca.message.chat.id}.png",reply_markup=keyboard_vaksan)
         except:
@@ -628,6 +636,7 @@ async def callback(c,ca):
             vaksan(driver,ca.message.chat.id)
             driver.quit()
             await c.send_photo(ca.message.chat.id,f"vaksan{ca.message.chat.id}.png",reply_markup=keyboard_vaksan)
+        await c.delete_messages(vakshow.chat.id,vakshow.message_id)
     
     if text=="vakssbt":
         mes_nob=await c.send_message(ca.message.chat.id,"🖐سلام به بخش ثبت کارت دیجیتال واکسناسیون💉 خوش امدید\n🔙برای برگشت به پنل کاربری از دستور /cancel استفاده کنید")
@@ -635,6 +644,7 @@ async def callback(c,ca):
         if link_vaksan.text=="/cancel":
             await c.send_message(ca.message.chat.id,"👻",reply_markup=keyboard_personal)
         else:
+            ms=await c.send_message(link_valsan.chat.id,"📤در حال بارگزاری...\nلطفا کمی صبر کنید")
             driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
             par=get_user_pass(ca.message.chat.id).split()
             login(par[0],par[1],driver)
@@ -642,6 +652,7 @@ async def callback(c,ca):
             await c.delete_messages(link_vaksan.chat.id,link_vaksan.message_id)
             await c.delete_messages(link_vaksan.chat.id,link_vaksan.request.message_id)
             await c.delete_messages(mes_nob.chat.id,mes_nob.message_id)
+            await c.delete_messages(ms.chat.id,ms.message_id)
             driver.quit()
     
     if text=="backpnl":
@@ -649,9 +660,11 @@ async def callback(c,ca):
     
     if text=="claszbt":
         number_les=ca.data[7:]
+        maseg_class=await c.send_message(ca.message.chat.id,"📥در حال دریافت لیست.\nلطفا کمی منتظر بمانید.")
         driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
         await get_link_recorded(driver,ca.message.chat.id,c,number_les)
         driver.quit()
+        await c.delete_messages(maseg_class.chat.id,maseg_class.message_id)
     
 
 app.run()
