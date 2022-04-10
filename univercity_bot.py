@@ -364,6 +364,13 @@ def get_information(driver,user,password,ca):
     else:
         pass
 
+def is_raced(driver,user,password):
+    url="https://puya.kashmar.ac.ir/gateway/PuyaMainFrame.php"
+    driver.get(url) 
+    time.sleep(1) 
+    x=driver.find_elements_by_tag_name("span")
+    c=x[0].text.find("راکد")
+    return c
 #------------------------------====================================/////////////////////////////////////////////////////////////////////////////////////
 option=webdriver.ChromeOptions()
 option.binary_location=os.environ.get("GOOGLE_CHROME_BIN")
@@ -479,20 +486,23 @@ async def callback(c,ca):
                     await c.send_message(ca.message.chat.id,"🏠",reply_markup=keyboard_home)
                 else:
                     sinn=1
-                    khosh=await c.send_message(password.chat.id,"📥در حال گرفتن اطلاعات اطفا صبور باشید")
+                    khosh=await c.send_message(password.chat.id,"📥در حال گرفتن اطلاعات لطفا صبور باشید")
                     driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
                     print(login(username.text,password.text,driver),get_information(driver,username.text,password.text,ca))
                     if login(username.text,password.text,driver)==0:
                         sinn=0
-                    if get_information(driver,username.text,password.text,ca)==0:
-                        sinn=0
-                    if sinn==1:
-                        await c.send_message(password.chat.id,"✅دریافت اطلاعات کامل شد",reply_markup=keyboard_personal)
-                        file_login=open("logined.txt","a",encoding="UTF-8")
-                        file_login.write(str(ca.message.chat.id)+" ")
-                        file_login.close()
-                    if sinn==0:
-                        await c.send_message(password.chat.id,"❌اطلاعات ورود اشتباه است به منو اصلی باز میگردید‼",reply_markup=keyboard_home)
+                    if is_raced(driver,username.text,password.text)==-1:
+                        if get_information(driver,username.text,password.text,ca)==0:
+                            sinn=0
+                        if sinn==1:
+                            await c.send_message(password.chat.id,"✅دریافت اطلاعات کامل شد",reply_markup=keyboard_personal)
+                            file_login=open("logined.txt","a",encoding="UTF-8")
+                            file_login.write(str(ca.message.chat.id)+" ")
+                            file_login.close()
+                        if sinn==0:
+                            await c.send_message(password.chat.id,"❌اطلاعات ورود اشتباه است به منو اصلی باز میگردید‼",reply_markup=keyboard_home)
+                    else:
+                        await c.send_message(password.chat.id,"❌این دانشجو وضعیت راکد دارد و دسترسی به پنل کاربری ندارد‼",reply_markup=keyboard_home)
                     driver.quit()
                     await c.delete_messages(khosh.chat.id,khosh.message_id)
         
@@ -615,7 +625,7 @@ async def callback(c,ca):
         if len(par)==0:
             await c.send_message(ca.message.chat.id,"❌شما تا کنون وارد نشده اید.\n💥برای استفاده از پنل کاربری ابتدا با استفاده از دکمه پنل کاربری وارد شوید شوید.",reply_markup=keyboard_personal)
         else:
-            mes_job=await c.send_message(ca.message.chat.id,"♻در حال گرفتن اطلاعات اطفا صبور باشید")
+            mes_job=await c.send_message(ca.message.chat.id,"♻در حال گرفتن اطلاعات لطفا صبور باشید")
             driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
             login(par[0],par[1],driver)
             get_information(driver,par[0],par[1],ca)
@@ -651,7 +661,7 @@ async def callback(c,ca):
         if link_vaksan.text=="/cancel":
             await c.send_message(ca.message.chat.id,"👻",reply_markup=keyboard_personal)
         else:
-            ms=await c.send_message(link_valsan.chat.id,"📤در حال بارگزاری...\nلطفا کمی صبر کنید")
+            ms=await c.send_message(link_vaksan.chat.id,"📤در حال بارگزاری...\nلطفا کمی صبر کنید")
             driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
             par=get_user_pass(ca.message.chat.id).split()
             login(par[0],par[1],driver)
