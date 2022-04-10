@@ -613,7 +613,7 @@ async def callback(c,ca):
             mes_job=await c.send_message(ca.message.chat.id,"♻در حال گرفتن اطلاعات اطفا صبور باشید")
             driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
             login(par[0],par[1],driver)
-            get_information(driver,par[0],p[1],ca)
+            get_information(driver,par[0],par[1],ca)
             hozore(driver,ca.message.chat.id)
             plan_class(driver,ca.message.chat.id)
             vaksan(driver,ca.message.chat.id)
