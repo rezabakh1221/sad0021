@@ -262,7 +262,17 @@ def emtehanat(driver,id):
     
 async def number_do(driver,id,c):
     try:
+        text=""
         wb = xlrd.open_workbook(f"number_do{id}.xls")
+        sheet = wb.sheet_by_index(0)
+        sheet.cell_value(0, 0)
+        for i in range(sheet.nrows):
+            p=sheet.row_values(i)
+            if len(p)>5:
+                text+=f"📝کد درس: {p[0]} ||| 📚نام درس: {p[1]} ||| 🔶تعداد واحد: {p[2]} ||| 👨‍🎓استاد: {p[3]} ||| ❇نمره: {p[4]} ||| 🔴وضعیت نمره: {p[5]} ||| 📋شماره لیست نمره: {p[6]} ||| ❇وضعیت لیست نمره: {p[7]}\n➖➖\n"
+            else:
+                text+=f"🔲{p[0]}: {p[1]} ||| 📜{p[2]}: {p[3]}"
+        await c.send_message(id,text,reply_markup=keyboard_kansel)
     except:
         try:
             driver.get("https://puya.kashmar.ac.ir/educ/educfac/stuShowEducationalLogFromGradeList.php")
@@ -291,20 +301,20 @@ async def number_do(driver,id,c):
                 f+=1
                 htm+=1
             workbook.close()
-            return 1
+            
         except:
-            return 0
-    text=""
-    wb = xlrd.open_workbook(f"number_do{id}.xls")
-    sheet = wb.sheet_by_index(0)
-    sheet.cell_value(0, 0)
-    for i in range(sheet.nrows):
-        p=sheet.row_values(i)
-        if len(p)>5:
-            text+=f"📝کد درس: {p[0]} ||| 📚نام درس: {p[1]} ||| 🔶تعداد واحد: {p[2]} ||| 👨‍🎓استاد: {p[3]} ||| ❇نمره: {p[4]} ||| 🔴وضعیت نمره: {p[5]} ||| 📋شماره لیست نمره: {p[6]} ||| ❇وضعیت لیست نمره: {p[7]}\n➖➖\n"
-        else:
-            text+=f"🔲{p[0]}: {p[1]} ||| 📜{p[2]}: {p[3]}"
-    await c.send_message(id,text,reply_markup=keyboard_kansel)
+            pass
+        text=""
+        wb = xlrd.open_workbook(f"number_do{id}.xls")
+        sheet = wb.sheet_by_index(0)
+        sheet.cell_value(0, 0)
+        for i in range(sheet.nrows):
+            p=sheet.row_values(i)
+            if len(p)>5:
+                text+=f"📝کد درس: {p[0]} ||| 📚نام درس: {p[1]} ||| 🔶تعداد واحد: {p[2]} ||| 👨‍🎓استاد: {p[3]} ||| ❇نمره: {p[4]} ||| 🔴وضعیت نمره: {p[5]} ||| 📋شماره لیست نمره: {p[6]} ||| ❇وضعیت لیست نمره: {p[7]}\n➖➖\n"
+            else:
+                text+=f"🔲{p[0]}: {p[1]} ||| 📜{p[2]}: {p[3]}"
+        await c.send_message(id,text,reply_markup=keyboard_kansel)
     
 def hozore(driver,id):
     try:
