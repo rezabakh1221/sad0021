@@ -164,13 +164,11 @@ def exist_number(number):
             return i
     return -1
 def get_user_pass(number):
-    print(number)
     wb = xlrd.open_workbook("all_information.xls")
     sheet = wb.sheet_by_index(0)
     sheet.cell_value(0, 0)
     for i in range(sheet.nrows):
         p=sheet.row_values(i)
-        print(p)
         if int(number) == int(p[5]):
             return f"{p[2]} {p[4]}"
         
@@ -479,19 +477,19 @@ async def callback(c,ca):
                     sinn=1
                     khosh=await c.send_message(password.chat.id,"📥در حال گرفتن اطلاعات اطفا صبور باشید")
                     driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
-                    if login(username.text,password.text,driver)==1:
-                        if get_information(driver,username.text,password.text,ca)==1:
-                            await c.send_message(password.chat.id,"✅دریافت اطلاعات کامل شد",reply_markup=keyboard_personal)
-                            file_login=open("logined.txt","a",encoding="UTF-8")
-                            file_login.write(str(ca.message.chat.id)+" ")
-                            file_login.close()
-                        else:
-                            s=0
-                    else:
+                    print(login(username.text,password.text,driver),get_information(driver,username.text,password.text,ca))
+                    if login(username.text,password.text,driver)==0:
                         s=0
-                    driver.quit()
+                    if get_information(driver,username.text,password.text,ca)==0:
+                        s=0
+                    if s==1:
+                        await c.send_message(password.chat.id,"✅دریافت اطلاعات کامل شد",reply_markup=keyboard_personal)
+                        file_login=open("logined.txt","a",encoding="UTF-8")
+                        file_login.write(str(ca.message.chat.id)+" ")
+                        file_login.close()
                     if s==0:
                         await c.send_message(password.chat.id,"اطلاعات ورود اشتباه است به منو اصلی باز میگردید",reply_markup=keyboard_home)
+                    driver.quit()
                     await c.delete_messages(khosh.chat.id,khosh.message_id)
         
     if text=="taghams":
