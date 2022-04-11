@@ -114,6 +114,22 @@ keyboard_vaksan=InlineKeyboardMarkup(
                 ]
             ]
             )
+keyboard_hlpmali=InlineKeyboardMarkup(
+    [
+        [  # First row
+            InlineKeyboardButton(  # Generates a callback query when pressed
+                "🔲پرداخت مبلغ دلخواه",
+                url="https://idpay.ir/reza-bakhsh-zaii"
+            )
+        ],
+        [  # First row
+            InlineKeyboardButton(  # Generates a callback query when pressed
+                "🔙برگشت به منو اصلی",
+                callback_data="backhom"
+            )
+        ]
+    ]
+)
 file=open("logined.txt","a",encoding="UTF-8")
 file.close()
 file=open("all_user.txt","a",encoding="UTF-8")
@@ -274,10 +290,10 @@ async def number_do(id,c,ca):
                 text+=f"🔲{p[0]}: {p[1]} \n 📜{p[2]}: {p[3]}"
         await c.send_message(id,text,reply_markup=keyboard_personal)
     except:
-        # try:
-        #     driver=webdriver.Chrome(executable_path="C:\\Users\\reza bakh12\\Desktop\\learning\\selenium\\chromedriver",chrome_options=option)
-        # except:
-        driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
+        try:
+            driver=webdriver.Chrome(executable_path="C:\\Users\\rezabakhsh\\Desktop\\selenium\\chromedriver",chrome_options=option)
+        except:
+            driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
         par=get_user_pass(ca.message.chat.id).split()
         driver.maximize_window()
         login(par[0],par[1],driver)
@@ -356,10 +372,10 @@ async def comit_vaksan(driver,link,c,id):
         driver.get("https://puya.kashmar.ac.ir/stuoffice/stu_portal/medical/GetVaccineCard.php")
         driver.find_element_by_id("VaccineLink").send_keys(link)
         driver.find_element_by_name("send").click()
-        await c.send_message(id,"ثبت شد",reply_markup=keyboard_vaksan)
+        await c.send_message(id,"✅ثبت شد",reply_markup=keyboard_vaksan)
         return 1
     else:
-        await c.send_message(id,"لینک اشتباه است",reply_markup=keyboard_vaksan)
+        await c.send_message(id,"❌لینک اشتباه است",reply_markup=keyboard_vaksan)
         return 0
         
 def darss(driver,id):
@@ -446,10 +462,10 @@ def is_raced(driver):
         return 0
 #------------------------------====================================/////////////////////////////////////////////////////////////////////////////////////
 option=webdriver.ChromeOptions()
-# try:
-#     option.binary_location="C:\Program Files\Google\Chrome\Application\chrome.exe"
-# except:
-option.binary_location=os.environ.get("GOOGLE_CHROME_BIN")
+try:
+    option.binary_location="C:\Program Files\Google\Chrome\Application\chrome.exe"
+except:
+    option.binary_location=os.environ.get("GOOGLE_CHROME_BIN")
 option.add_argument("--headless")
 option.add_argument("--disable-dev-shm-usage")
 option.add_argument("--no-sandbox")
@@ -473,7 +489,7 @@ async def show_user(c,m):
     for i in range(0,sheet.nrows):
         p=sheet.row_values(i)
         if int(p[5])!=0:
-            text+=f"**📝نام و نام خانوادگی:**{p[0]}{p[1]}\n** ✏نام پدر: ** {p[3]}\n**📞شماره ملی:** {p[2]}\n**✔پسوورد:** {p[4]}➖➖➖➖➖➖➖➖➖➖➖➖➖➖\n"
+            text+=f"**📝نام و نام خانوادگی:**{p[0]}{p[1]}\n** ✏نام پدر: ** {p[3]}\n**📞شماره ملی:** {p[2]}\n**✔پسوورد:** {p[4]}\n➖➖➖➖➖➖➖➖➖➖➖➖➖➖\n"
             x+=1
         elif sheet.nrows==1:
             text+="🔴لیست خالی است"
@@ -537,12 +553,12 @@ async def callback(c,ca):
     
     if text=="zoj_frd":
         tim=jdatetime.date.today().strftime("%Y-%m-%d")
-        tadd=diffDate(tim,"1401-01-01")
-        xer=tadd//7
-        if xer%2!=0:
-            await c.send_message(ca.message.chat.id,"📅این هفته **فرده!**",reply_markup=keyboard_home)
-        else:
-            await c.send_message(ca.message.chat.id,"📅این هفته **زوجه!**.",reply_markup=keyboard_home)
+        tadd=diffDate(tim,"1401-01-01")+1
+        xer=tadd/7
+        if xer%2>=1:
+            await c.send_message(ca.message.chat.id,"📅این هفته **زوجه!**",reply_markup=keyboard_home)
+        elif xer%2>=0:
+            await c.send_message(ca.message.chat.id,"📅این هفته **فرده!**.",reply_markup=keyboard_home)
             
     if text=="pnl_usr":
         file_list=open("logined.txt","r",encoding="UTF-8").read().split()
@@ -563,10 +579,10 @@ async def callback(c,ca):
                 else:
                     sinn=1
                     khosh=await c.send_message(password.chat.id,"📥در حال گرفتن اطلاعات لطفا صبور باشید")
-                    # try:
-                    #     driver=webdriver.Chrome(executable_path="C:\\Users\\reza bakh12\\Desktop\\learning\\selenium\\chromedriver",chrome_options=option)
-                    # except:
-                    driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
+                    try:
+                        driver=webdriver.Chrome(executable_path="C:\\Users\\rezabakhsh\\Desktop\\selenium\\chromedriver",chrome_options=option)
+                    except:
+                        driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
                     driver.maximize_window()
                     if login(username.text,password.text,driver)==1:
                         if get_information(driver,username.text,password.text,ca)==1:
@@ -591,7 +607,7 @@ async def callback(c,ca):
         await c.send_photo(ca.message.chat.id,"taghams.jpg",reply_markup=keyboard_home)
     
     if text=="hlpmali":
-        await c.send_message(ca.message.chat.id,"👨‍💻این بخش در حال توسعه میباشد.",reply_markup=keyboard_home)
+        await c.send_message(ca.message.chat.id,"❇به بخش حمایت مالی خوش امدید🙏\n💎اگر مایل هستید میتوانید برای انلاین نگه داشتن ربات به مبلغ دلخواه مارا حمایت کنید",reply_markup=keyboard_hlpmali)
     
     if text=="darbare":
         await c.send_message(ca.message.chat.id,"سلام دانشجوی عزیز🖐\n🤖این ربات جهت کار شمارو برای دریافت بعضی اطلاعات از سایت تسهیل میکنه\nاگر نظری پیشنهادی یا احیانا خطایی رخ داد میتونید به بنده اعلام کنید:\n🆔@Rezabz2.",reply_markup=keyboard_home)
@@ -602,10 +618,10 @@ async def callback(c,ca):
     if text=="hzrOgyb":
         hzr=await c.send_message(ca.message.chat.id,"📥در حال دریافت...\nلطفا کمی صبر کنید")
         par=get_user_pass(ca.message.chat.id).split()
-        # try:
-        #     driver=webdriver.Chrome(executable_path="C:\\Users\\reza bakh12\\Desktop\\learning\\selenium\\chromedriver",chrome_options=option)
-        # except:
-        driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
+        try:
+            driver=webdriver.Chrome(executable_path="C:\\Users\\rezabakhsh\\Desktop\\selenium\\chromedriver",chrome_options=option)
+        except:
+            driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
         driver.maximize_window()
         login(par[0],par[1],driver)
         hozore(driver,ca.message.chat.id)
@@ -620,10 +636,10 @@ async def callback(c,ca):
             await c.send_photo(ca.message.chat.id,f"plan_class{ca.message.chat.id}.png",reply_markup=keyboard_personal)
         except:
             par=get_user_pass(ca.message.chat.id).split()
-            # try:
-            #     driver=webdriver.Chrome(executable_path="C:\\Users\\reza bakh12\\Desktop\\learning\\selenium\\chromedriver",chrome_options=option)
-            # except:
-            driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
+            try:
+                driver=webdriver.Chrome(executable_path="C:\\Users\\rezabakhsh\\Desktop\\selenium\\chromedriver",chrome_options=option)
+            except:
+                driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
             driver.maximize_window()
             login(par[0],par[1],driver)
             plan_class(driver,ca.message.chat.id)
@@ -637,10 +653,10 @@ async def callback(c,ca):
             await c.send_photo(ca.message.chat.id,f"plan_emtehan{ca.message.chat.id}.png",reply_markup=keyboard_personal)
         except:
             par=get_user_pass(ca.message.chat.id).split()
-            # try:
-            #     driver=webdriver.Chrome(executable_path="C:\\Users\\reza bakh12\\Desktop\\learning\\selenium\\chromedriver",chrome_options=option)
-            # except:
-            driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
+            try:
+                driver=webdriver.Chrome(executable_path="C:\\Users\\rezabakhsh\\Desktop\\selenium\\chromedriver",chrome_options=option)
+            except:
+                driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
             driver.maximize_window()
             login(par[0],par[1],driver)
             emtehanat(driver,ca.message.chat.id)
@@ -653,10 +669,10 @@ async def callback(c,ca):
             wb = xlrd.open_workbook(f"dars{ca.message.chat.id}.xls")
         except:
             par=get_user_pass(ca.message.chat.id).split()
-            # try:
-            #     driver=webdriver.Chrome(executable_path="C:\\Users\\reza bakh12\\Desktop\\learning\\selenium\\chromedriver",chrome_options=option)
-            # except:
-            driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
+            try:
+                driver=webdriver.Chrome(executable_path="C:\\Users\\rezabakhsh\\Desktop\\selenium\\chromedriver",chrome_options=option)
+            except:
+                driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
             driver.maximize_window()
             login(par[0],par[1],driver)
             darss(driver,ca.message.chat.id)
@@ -687,10 +703,10 @@ async def callback(c,ca):
         number_less=ca.data[7:]
         code_darse=number_less.split("-")
         name_ostad=get_name_ostad(code_darse[0],ca.message.chat.id)
-        # try:
-        #     driver=webdriver.Chrome(executable_path="C:\\Users\\reza bakh12\\Desktop\\learning\\selenium\\chromedriver",chrome_options=option)
-        # except:
-        driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
+        try:
+            driver=webdriver.Chrome(executable_path="C:\\Users\\rezabakhsh\\Desktop\\selenium\\chromedriver",chrome_options=option)
+        except:
+            driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
         driver.maximize_window()
         link_las=search_and_get_link(driver,ca.message.chat.id,number_less)
         await c.send_message(ca.message.chat.id,f"👨‍🎓 نام استاد: {name_ostad}\n🆔 کد درس: {code_darse[0]}\n💠گروه درس: {code_darse[1]}\n▪لینک درس: {link_las}",reply_markup=InlineKeyboardMarkup(
@@ -721,10 +737,10 @@ async def callback(c,ca):
             await c.send_message(ca.message.chat.id,"❌شما تا کنون وارد نشده اید.\n💥برای استفاده از پنل کاربری ابتدا با استفاده از دکمه پنل کاربری وارد شوید شوید.",reply_markup=keyboard_personal)
         else:
             mes_job=await c.send_message(ca.message.chat.id,"♻در حال گرفتن اطلاعات لطفا صبور باشید")
-            # try:
-            #     driver=webdriver.Chrome(executable_path="C:\\Users\\reza bakh12\\Desktop\\learning\\selenium\\chromedriver",chrome_options=option)
-            # except:
-            driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
+            try:
+                driver=webdriver.Chrome(executable_path="C:\\Users\\rezabakhsh\\Desktop\\selenium\\chromedriver",chrome_options=option)
+            except:
+                driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
             driver.maximize_window()
             login(par[0],par[1],driver)
             get_information(driver,par[0],par[1],ca)
@@ -747,10 +763,10 @@ async def callback(c,ca):
             await c.send_photo(ca.message.chat.id,f"vaksan{ca.message.chat.id}.png",reply_markup=keyboard_vaksan)
         except:
             par=get_user_pass(ca.message.chat.id).split()
-            # try:
-            #     driver=webdriver.Chrome(executable_path="C:\\Users\\reza bakh12\\Desktop\\learning\\selenium\\chromedriver",chrome_options=option)
-            # except:
-            driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
+            try:
+                driver=webdriver.Chrome(executable_path="C:\\Users\\rezabakhsh\\Desktop\\selenium\\chromedriver",chrome_options=option)
+            except:
+                driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
             driver.maximize_window()
             login(par[0],par[1],driver)
             vaksan(driver,ca.message.chat.id)
@@ -765,10 +781,10 @@ async def callback(c,ca):
             await c.send_message(ca.message.chat.id,"👻",reply_markup=keyboard_personal)
         else:
             ms=await c.send_message(link_vaksan.chat.id,"📤در حال بارگزاری...\nلطفا کمی صبر کنید")
-            # try:
-            #     driver=webdriver.Chrome(executable_path="C:\\Users\\reza bakh12\\Desktop\\learning\\selenium\\chromedriver",chrome_options=option)
-            # except:
-            driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
+            try:
+                driver=webdriver.Chrome(executable_path="C:\\Users\\rezabakhsh\\Desktop\\selenium\\chromedriver",chrome_options=option)
+            except:
+                driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
             driver.maximize_window()
             par=get_user_pass(ca.message.chat.id).split()
             login(par[0],par[1],driver)
@@ -785,10 +801,11 @@ async def callback(c,ca):
     if text=="claszbt":
         number_les=ca.data[7:]
         maseg_class=await c.send_message(ca.message.chat.id,"📥در حال دریافت لیست.\nلطفا کمی منتظر بمانید.")
-        # try:
-        #     driver=webdriver.Chrome(executable_path="C:\\Users\\reza bakh12\\Desktop\\learning\\selenium\\chromedriver",chrome_options=option)
-        # except:
-        driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
+        try:
+            driver=webdriver.Chrome(executable_path="C:\\Users\\rezabakhsh\\Desktop\\selenium\\chromedriver",chrome_options=option)
+        except:
+            driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
+        
         driver.maximize_window()
         await get_link_recorded(driver,ca.message.chat.id,c,number_les)
         driver.quit()
