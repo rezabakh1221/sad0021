@@ -659,11 +659,11 @@ async def callback(c,ca):
                                 namer=get_name_family(password.chat.id)
                                 piame=await c.send_message(ca.message.chat.id,f"📡درحال اتصال به پرتال **¦ {namer} ¦**\n",parse_mode="markdown")
                                 plan_class(driver,ca.message.chat.id)
-                                await c.edit_message_text(piame.chat.id,piame.message_id,f"📡درحال اتصال به پرتال **¦ {namer} ¦**\n✅دریافت برنامه کلاسی\n",parse_mode="markdown")
+                                await piame.edit(f"📡درحال اتصال به پرتال **¦ {namer} ¦**\n✅دریافت برنامه کلاسی\n",parse_mode="markdown")
                                 darss(driver,ca.message.chat.id)
-                                await c.edit_message_text(piame.chat.id,piame.message_id,f"📡درحال اتصال به پرتال **¦ {namer} ¦**\n✅دریافت برنامه کلاسی\n✅دریافت لیست درس ها\n",parse_mode="markdown")
+                                await piame.edit(f"📡درحال اتصال به پرتال **¦ {namer} ¦**\n✅دریافت برنامه کلاسی\n✅دریافت لیست درس ها\n",parse_mode="markdown")
                                 emtehanat(driver,ca.message.chat.id)
-                                await c.edit_message_text(piame.chat.id,piame.message_id,f"📡درحال اتصال به پرتال **¦ {namer} ¦**\n✅دریافت برنامه کلاسی\n✅دریافت لیست درس ها\n✅دریافت برنامه امتحانی\n",parse_mode="markdown")
+                                await piame.edit(f"📡درحال اتصال به پرتال **¦ {namer} ¦**\n✅دریافت برنامه کلاسی\n✅دریافت لیست درس ها\n✅دریافت برنامه امتحانی\n",parse_mode="markdown")
                                 await c.delete_messages(piame.chat.id,piame.message_id)
                                 await c.send_message(password.chat.id,"✅دریافت اطلاعات کامل شد",reply_markup=keyboard_personal)
                                 file_login=open("logined.txt","a",encoding="UTF-8")
@@ -691,6 +691,7 @@ async def callback(c,ca):
     
     if text=="infvaks":
         par=get_user_pass(ca.message.chat.id).split()
+        print(par)
         if len(par)==0:
             await c.send_message(ca.message.chat.id,"❌شما تا کنون وارد نشده اید.\n💥برای استفاده از پنل کاربری ابتدا با استفاده از دکمه پنل کاربری وارد شوید شوید.",reply_markup=keyboard_home)
         else:
@@ -855,15 +856,15 @@ async def callback(c,ca):
                 pim=await c.send_message(ca.message.chat.id,f"📡درحال اتصال به پرتال **¦ {neme} ¦**\n",parse_mode="markdown")
                 login(par[0],par[1],driver)
                 if plan_class(driver,ca.message.chat.id)==1:
-                    await c.edit_message_text(pim.chat.id,pim.message_id,f"📡درحال اتصال به پرتال **¦ {neme} ¦**\n✅دریافت برنامه کلاسی\n",parse_mode="markdown")
+                    await pim.edit(f"📡درحال اتصال به پرتال **¦ {neme} ¦**\n✅دریافت برنامه کلاسی\n",parse_mode="markdown")
                     darss(driver,ca.message.chat.id)
-                    await c.edit_message_text(pim.chat.id,pim.message_id,f"📡درحال اتصال به پرتال **¦ {neme} ¦**\n✅دریافت برنامه کلاسی\n✅دریافت لیست درس ها\n",parse_mode="markdown")
+                    await pim.edit(f"📡درحال اتصال به پرتال **¦ {neme} ¦**\n✅دریافت برنامه کلاسی\n✅دریافت لیست درس ها\n",parse_mode="markdown")
                     emtehanat(driver,ca.message.chat.id)
-                    await c.edit_message_text(pim.chat.id,pim.message_id,f"📡درحال اتصال به پرتال **¦ {neme} ¦**\n✅دریافت برنامه کلاسی\n✅دریافت لیست درس ها\n✅دریافت برنامه امتحانی\n",parse_mode="markdown")
+                    await pim.edit(f"📡درحال اتصال به پرتال **¦ {neme} ¦**\n✅دریافت برنامه کلاسی\n✅دریافت لیست درس ها\n✅دریافت برنامه امتحانی\n",parse_mode="markdown")
                     await number_do(ca.message.chat.id,c,ca,0)
-                    await c.edit_message_text(pim.chat.id,pim.message_id,f"📡درحال اتصال به پرتال **¦ {neme} ¦**\n✅دریافت برنامه کلاسی\n✅دریافت لیست درس ها\n✅دریافت برنامه امتحانی\n✅دریافت نمرات ترم\n✅دریافت اطلاعات واکسناسیون\n",parse_mode="markdown")
+                    await pim.edit(f"📡درحال اتصال به پرتال **¦ {neme} ¦**\n✅دریافت برنامه کلاسی\n✅دریافت لیست درس ها\n✅دریافت برنامه امتحانی\n✅دریافت نمرات ترم\n",parse_mode="markdown")
                     vaksan(driver,ca.message.chat.id)
-                    await c.edit_message_text(pim.chat.id,pim.message_id,f"📡درحال اتصال به پرتال **¦ {neme} ¦**\n✅دریافت برنامه کلاسی\n✅دریافت لیست درس ها\n✅دریافت برنامه امتحانی\n✅دریافت نمرات ترم\n✅دریافت اطلاعات واکسناسیون\n",parse_mode="markdown")
+                    await pim.edit(f"📡درحال اتصال به پرتال **¦ {neme} ¦**\n✅دریافت برنامه کلاسی\n✅دریافت لیست درس ها\n✅دریافت برنامه امتحانی\n✅دریافت نمرات ترم\n✅دریافت اطلاعات واکسناسیون\n",parse_mode="markdown")
                     await c.delete_messages(pim.chat.id,pim.message_id)
                     await c.send_message(ca.message.chat.id,"✅دریافت اطلاعات کامل شد",reply_markup=keyboard_personal)
                     await c.delete_messages(mes_job.chat.id,mes_job.message_id)
