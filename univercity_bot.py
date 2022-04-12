@@ -654,14 +654,19 @@ async def callback(c,ca):
                     driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
                     driver.maximize_window()
                     if login(username.text,password.text,driver)==1:
+                        time.sleep(0.5)
                         if get_information(driver,username.text,password.text,ca)==1:
+                            time.sleep(0.5)
                             if is_raced(driver)==-1:
                                 namer=get_name_family(password.chat.id)
                                 piame=await c.send_message(ca.message.chat.id,f"📡درحال اتصال به پرتال **¦ {namer} ¦**\n",parse_mode="markdown")
+                                time.sleep(0.5)
                                 plan_class(driver,ca.message.chat.id)
                                 await piame.edit(f"📡درحال اتصال به پرتال **¦ {namer} ¦**\n✅دریافت برنامه کلاسی\n",parse_mode="markdown")
+                                time.sleep(0.5)
                                 darss(driver,ca.message.chat.id)
                                 await piame.edit(f"📡درحال اتصال به پرتال **¦ {namer} ¦**\n✅دریافت برنامه کلاسی\n✅دریافت لیست درس ها\n",parse_mode="markdown")
+                                time.sleep(0.5)
                                 emtehanat(driver,ca.message.chat.id)
                                 await piame.edit(f"📡درحال اتصال به پرتال **¦ {namer} ¦**\n✅دریافت برنامه کلاسی\n✅دریافت لیست درس ها\n✅دریافت برنامه امتحانی\n",parse_mode="markdown")
                                 await c.delete_messages(piame.chat.id,piame.message_id)
@@ -690,7 +695,10 @@ async def callback(c,ca):
         await c.send_message(ca.message.chat.id,"سلام دانشجوی عزیز🖐\n🤖این ربات جهت کار شمارو برای دریافت بعضی اطلاعات از سایت تسهیل میکنه\nاگر نظری پیشنهادی یا احیانا خطایی رخ داد میتونید به بنده اعلام کنید:\n🆔@Rezabz2.",reply_markup=keyboard_home)
     
     if text=="infvaks":
-        par=get_user_pass(ca.message.chat.id).split()
+        try:
+            par=get_user_pass(ca.message.chat.id).split()
+        except:
+            par=get_user_pass(ca.message.chat.id)
         print(par)
         if len(par)==0:
             await c.send_message(ca.message.chat.id,"❌شما تا کنون وارد نشده اید.\n💥برای استفاده از پنل کاربری ابتدا با استفاده از دکمه پنل کاربری وارد شوید شوید.",reply_markup=keyboard_home)
@@ -857,12 +865,16 @@ async def callback(c,ca):
                 login(par[0],par[1],driver)
                 if plan_class(driver,ca.message.chat.id)==1:
                     await pim.edit(f"📡درحال اتصال به پرتال **¦ {neme} ¦**\n✅دریافت برنامه کلاسی\n",parse_mode="markdown")
+                    time.sleep(0.5)
                     darss(driver,ca.message.chat.id)
                     await pim.edit(f"📡درحال اتصال به پرتال **¦ {neme} ¦**\n✅دریافت برنامه کلاسی\n✅دریافت لیست درس ها\n",parse_mode="markdown")
+                    time.sleep(0.5)
                     emtehanat(driver,ca.message.chat.id)
                     await pim.edit(f"📡درحال اتصال به پرتال **¦ {neme} ¦**\n✅دریافت برنامه کلاسی\n✅دریافت لیست درس ها\n✅دریافت برنامه امتحانی\n",parse_mode="markdown")
+                    time.sleep(0.5)
                     await number_do(ca.message.chat.id,c,ca,0)
                     await pim.edit(f"📡درحال اتصال به پرتال **¦ {neme} ¦**\n✅دریافت برنامه کلاسی\n✅دریافت لیست درس ها\n✅دریافت برنامه امتحانی\n✅دریافت نمرات ترم\n",parse_mode="markdown")
+                    time.sleep(0.5)
                     vaksan(driver,ca.message.chat.id)
                     await pim.edit(f"📡درحال اتصال به پرتال **¦ {neme} ¦**\n✅دریافت برنامه کلاسی\n✅دریافت لیست درس ها\n✅دریافت برنامه امتحانی\n✅دریافت نمرات ترم\n✅دریافت اطلاعات واکسناسیون\n",parse_mode="markdown")
                     await c.delete_messages(pim.chat.id,pim.message_id)
