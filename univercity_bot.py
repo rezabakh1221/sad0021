@@ -815,7 +815,7 @@ async def callback(c,ca):
                 pim=await c.send_message(ca.message.chat.id,f"📡درحال اتصال به پرتال ** {neme} **\n",parse_mode="markdown")
                 login(par[0],par[1],driver)
                 if plan_class(driver,ca.message.chat.id)==1:
-                    await c.edit_message_text(pim.chat.id,ca.message.chat.id,f"📡درحال اتصال به پرتال **¦ {neme} ¦**\n✅دریافت برنامه کلاسی\n",parse_mode="markdown")
+                    await c.edit_message_text(pim.chat.id,ca.message.chat.id,f"📡درحال اتصال به پرتال ** {neme} **\n✅دریافت برنامه کلاسی\n",parse_mode="markdown")
                     darss(driver,ca.message.chat.id)
                     await c.edit_message_text(pim.chat.id,ca.message.chat.id,f"📡درحال اتصال به پرتال ** {neme} **\n✅دریافت برنامه کلاسی\n✅دریافت لیست درس ها\n",parse_mode="markdown")
                     emtehanat(driver,ca.message.chat.id)
