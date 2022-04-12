@@ -897,7 +897,8 @@ async def callback(c,ca):
                     time.sleep(0.5)
                     vaksan(driver,ca.message.chat.id)
                     await pim.edit(f"📡درحال اتصال به پرتال **¦ {neme} ¦**\n✅دریافت برنامه کلاسی\n✅دریافت لیست درس ها\n✅دریافت برنامه امتحانی\n✅دریافت نمرات ترم\n✅دریافت اطلاعات واکسناسیون\n",parse_mode="markdown")
-                    await c.delete_messages(pim.chat.id,pim.message_id)
+                    time.sleep(0.5)
+                    await pim.delete()
                     await c.send_message(ca.message.chat.id,"✅دریافت اطلاعات کامل شد",reply_markup=keyboard_personal)
                     await c.delete_messages(mes_job.chat.id,mes_job.message_id)
                 else:
