@@ -616,7 +616,6 @@ async def callback(c,ca):
                             if is_raced(driver)==-1:
                                 namer=get_name_family(password.chat.id)
                                 piame=await c.send_message(ca.message.chat.id,f"📡درحال اتصال به پرتال ** {namer} **\n")
-                                login(par[0],par[1],driver)
                                 plan_class(driver,ca.message.chat.id)
                                 await c.send_message(piame.chat.id,ca.message.chat.id,f"📡درحال اتصال به پرتال ** {namer} **\n✅دریافت برنامه کلاسی\n")
                                 darss(driver,ca.message.chat.id)
