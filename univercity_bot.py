@@ -615,10 +615,10 @@ async def callback(c,ca):
     if text=="daytime":
         respons=requests.get("http://api.codebazan.ir/time-date/?json=fa")
         response=respons.json()
-        time=response["result"]["time"]
+        ti=response["result"]["time"]
         date=response["result"]["date"]
         faawe=response["result"]["faweekname"]
-        await c.send_message(ca.message.chat.id,f"🕕**ساعت**: {time}\n📅**تاریخ**: {date}\n🗓{faawe}",reply_markup=keyboard_home)
+        await c.send_message(ca.message.chat.id,f"🕕**ساعت**: {ti}\n📅**تاریخ**: {date}\n🗓{faawe}",reply_markup=keyboard_home)
     
     if text=="zoj_frd":
         tim=jdatetime.date.today().strftime("%Y-%m-%d")
@@ -699,16 +699,18 @@ async def callback(c,ca):
             par=get_user_pass(ca.message.chat.id).split()
         except:
             par=get_user_pass(ca.message.chat.id)
-        print(par)
-        if len(par)==0:
+        if (par)==None:
             await c.send_message(ca.message.chat.id,"❌شما تا کنون وارد نشده اید.\n💥برای استفاده از پنل کاربری ابتدا با استفاده از دکمه پنل کاربری وارد شوید شوید.",reply_markup=keyboard_home)
         else:
             await c.send_message(ca.message.chat.id,"💉",reply_markup=keyboard_vaksan)
     
     if text=="hzrOgyb":
         if cheker_hozore(ca.message.chat.id)==1:
-            par=get_user_pass(ca.message.chat.id).split()
-            if len(par)==0:
+            try:
+                par=get_user_pass(ca.message.chat.id).split()
+            except:
+                par=get_user_pass(ca.message.chat.id)
+            if (par)==None:
                 await c.send_message(ca.message.chat.id,"❌شما تا کنون وارد نشده اید.\n💥برای استفاده از پنل کاربری ابتدا با استفاده از دکمه پنل کاربری وارد شوید شوید.",reply_markup=keyboard_home)
             else:
                 hzr=await c.send_message(ca.message.chat.id,"📥در حال دریافت...\nلطفا کمی صبر کنید")
@@ -728,8 +730,11 @@ async def callback(c,ca):
             await c.send_message(ca.message.chat.id,"❌هنوز محدودیت 6 ساعته شما به پایان نرسیده است.",reply_markup=keyboard_personal)
     
     if text=="plnclas":
-        par=get_user_pass(ca.message.chat.id).split()
-        if len(par)==0:
+        try:
+            par=get_user_pass(ca.message.chat.id).split()
+        except:
+            par=get_user_pass(ca.message.chat.id)
+        if (par)==None:
             await c.send_message(ca.message.chat.id,"❌شما تا کنون وارد نشده اید.\n💥برای استفاده از پنل کاربری ابتدا با استفاده از دکمه پنل کاربری وارد شوید شوید.",reply_markup=keyboard_home)
         else:
             plncl=await c.send_message(ca.message.chat.id,"📥در حال دریافت...\nلطفا کمی صبر کنید")
@@ -749,8 +754,11 @@ async def callback(c,ca):
             await c.delete_messages(plncl.chat.id,plncl.message_id)
     
     if text=="plncors":
-        par=get_user_pass(ca.message.chat.id).split()
-        if len(par)==0:
+        try:
+            par=get_user_pass(ca.message.chat.id).split()
+        except:
+            par=get_user_pass(ca.message.chat.id)
+        if (par)==None:
             await c.send_message(ca.message.chat.id,"❌شما تا کنون وارد نشده اید.\n💥برای استفاده از پنل کاربری ابتدا با استفاده از دکمه پنل کاربری وارد شوید شوید.",reply_markup=keyboard_home)
         else:
             cors=await c.send_message(ca.message.chat.id,"📥در حال دریافت...\nلطفا کمی صبر کنید")
@@ -769,8 +777,11 @@ async def callback(c,ca):
                 await c.send_photo(ca.message.chat.id,f"plan_emtehan{ca.message.chat.id}.png",reply_markup=keyboard_personal)
             await c.delete_messages(cors.chat.id,cors.message_id)
     if text=="lessons":
-        par=get_user_pass(ca.message.chat.id).split()
-        if len(par)==0:
+        try:
+            par=get_user_pass(ca.message.chat.id).split()
+        except:
+            par=get_user_pass(ca.message.chat.id)
+        if (par)==None:
             await c.send_message(ca.message.chat.id,"❌شما تا کنون وارد نشده اید.\n💥برای استفاده از پنل کاربری ابتدا با استفاده از دکمه پنل کاربری وارد شوید شوید.",reply_markup=keyboard_home)
         else:
             lessen=await c.send_message(ca.message.chat.id,"📥در حال دریافت...\nلطفا کمی صبر کنید")
@@ -808,8 +819,11 @@ async def callback(c,ca):
             await c.delete_messages(lessen.chat.id,lessen.message_id)
              
     if text=="clasrom":
-        par=get_user_pass(ca.message.chat.id).split()
-        if len(par)==0:
+        try:
+            par=get_user_pass(ca.message.chat.id).split()
+        except:
+            par=get_user_pass(ca.message.chat.id)
+        if (par)==None:
             await c.send_message(ca.message.chat.id,"❌شما تا کنون وارد نشده اید.\n💥برای استفاده از پنل کاربری ابتدا با استفاده از دکمه پنل کاربری وارد شوید شوید.",reply_markup=keyboard_home)
         else:
             liker=await c.send_message(ca.message.chat.id,"📥در حال دریافت...\nلطفا کمی صبر کنید")
@@ -840,8 +854,11 @@ async def callback(c,ca):
         await c.delete_messages(liker.chat.id,liker.message_id)
         driver.quit()
     if text=="numterm":
-        par=get_user_pass(ca.message.chat.id).split()
-        if len(par)==0:
+        try:
+            par=get_user_pass(ca.message.chat.id).split()
+        except:
+            par=get_user_pass(ca.message.chat.id)
+        if (par)==None:
             await c.send_message(ca.message.chat.id,"❌شما تا کنون وارد نشده اید.\n💥برای استفاده از پنل کاربری ابتدا با استفاده از دکمه پنل کاربری وارد شوید شوید.",reply_markup=keyboard_home)
         else:
             dart=await c.send_message(ca.message.chat.id,"📥در حال دریافت...\nلطفا کمی صبر کنید")
@@ -850,8 +867,11 @@ async def callback(c,ca):
         
     if text=="updinfo":
         if cheker_update(ca.message.chat.id)==1:
-            par=get_user_pass(ca.message.chat.id).split()
-            if len(par)==0:
+            try:
+                par=get_user_pass(ca.message.chat.id).split()
+            except:
+                par=get_user_pass(ca.message.chat.id)
+            if (par)==None:
                 await c.send_message(ca.message.chat.id,"❌شما تا کنون وارد نشده اید.\n💥برای استفاده از پنل کاربری ابتدا با استفاده از دکمه پنل کاربری وارد شوید شوید.",reply_markup=keyboard_home)
             else:
                 mes_job=await c.send_message(ca.message.chat.id,"♻در حال بروزرسانی اطلاعات لطفا صبور باشید")
@@ -891,8 +911,11 @@ async def callback(c,ca):
         await c.send_message(ca.message.chat.id,"🏠",reply_markup=keyboard_home)
     
     if text=="vaksshw":
-        par=get_user_pass(ca.message.chat.id).split()
-        if len(par)==0:
+        try:
+            par=get_user_pass(ca.message.chat.id).split()
+        except:
+            par=get_user_pass(ca.message.chat.id)
+        if (par)==None:
             await c.send_message(ca.message.chat.id,"❌شما تا کنون وارد نشده اید.\n💥برای استفاده از پنل کاربری ابتدا با استفاده از دکمه پنل کاربری وارد شوید شوید.",reply_markup=keyboard_home)
         else:
             vakshow=await c.send_message(ca.message.chat.id,"📥در حال دریافت...\nلطفا کمی صبر کنید")
@@ -912,8 +935,11 @@ async def callback(c,ca):
             await c.delete_messages(vakshow.chat.id,vakshow.message_id)
     
     if text=="vakssbt":
-        par=get_user_pass(ca.message.chat.id).split()
-        if len(par)==0:
+        try:
+            par=get_user_pass(ca.message.chat.id).split()
+        except:
+            par=get_user_pass(ca.message.chat.id)
+        if (par)==None:
             await c.send_message(ca.message.chat.id,"❌شما تا کنون وارد نشده اید.\n💥برای استفاده از پنل کاربری ابتدا با استفاده از دکمه پنل کاربری وارد شوید شوید.",reply_markup=keyboard_home)
         else:
             mes_nob=await c.send_message(ca.message.chat.id,"🖐سلام به بخش ثبت کارت دیجیتال واکسناسیون💉 خوش امدید\n🔙برای برگشت به پنل کاربری از دستور /cancel استفاده کنید")
@@ -940,8 +966,11 @@ async def callback(c,ca):
         await c.send_message(ca.message.chat.id,"👻",reply_markup=keyboard_personal)
     
     if text=="claszbt":
-        par=get_user_pass(ca.message.chat.id).split()
-        if len(par)==0:
+        try:
+            par=get_user_pass(ca.message.chat.id).split()
+        except:
+            par=get_user_pass(ca.message.chat.id)
+        if (par)==None:
             await c.send_message(ca.message.chat.id,"❌شما تا کنون وارد نشده اید.\n💥برای استفاده از پنل کاربری ابتدا با استفاده از دکمه پنل کاربری وارد شوید شوید.",reply_markup=keyboard_home)
         else:
             number_les=ca.data[7:]
