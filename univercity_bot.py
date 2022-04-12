@@ -276,23 +276,76 @@ def emtehanat(driver,id):
     except:
         return 0
     
-async def number_do(id,c,ca):
-    try:
-        text=""
-        wb = xlrd.open_workbook(f"number_do{id}.xls")
-        sheet = wb.sheet_by_index(0)
-        sheet.cell_value(0, 0)
-        for i in range(sheet.nrows):
-            p=sheet.row_values(i)
-            if i<sheet.nrows-1:
-                text+=f"📝کد درس: {p[0]} \n 📚نام درس: {p[1]} \n 🔶تعداد واحد: {p[2]} \n 👨‍🎓استاد: {p[3]} \n ❇نمره: {p[4]} \n 🔴وضعیت نمره: {p[5]} \n 📋شماره لیست نمره: {p[6]} \n ❇وضعیت لیست نمره: {p[7]}\n➖➖\n"
-            else:
-                text+=f"🔲{p[0]}: {p[1]} \n 📜{p[2]}: {p[3]}"
-        await c.send_message(id,text,reply_markup=keyboard_personal)
-    except:
-        # try:
-        #     driver=webdriver.Chrome(executable_path="C:\\Users\\rezabakhsh\\Desktop\\selenium\\chromedriver",chrome_options=option)
-        # except:
+async def number_do(id,c,ca,sw):
+    if sw==1:
+        try:
+            text=""
+            wb = xlrd.open_workbook(f"number_do{id}.xls")
+            sheet = wb.sheet_by_index(0)
+            sheet.cell_value(0, 0)
+            for i in range(sheet.nrows):
+                p=sheet.row_values(i)
+                if i<sheet.nrows-1:
+                    text+=f"📝کد درس: {p[0]} \n 📚نام درس: {p[1]} \n 🔶تعداد واحد: {p[2]} \n 👨‍🎓استاد: {p[3]} \n ❇نمره: {p[4]} \n 🔴وضعیت نمره: {p[5]} \n 📋شماره لیست نمره: {p[6]} \n ❇وضعیت لیست نمره: {p[7]}\n➖➖\n"
+                else:
+                    text+=f"🔲{p[0]}: {p[1]} \n 📜{p[2]}: {p[3]}"
+            await c.send_message(id,text,reply_markup=keyboard_personal)
+        except:
+            # try:
+            #     driver=webdriver.Chrome(executable_path="C:\\Users\\rezabakhsh\\Desktop\\selenium\\chromedriver",chrome_options=option)
+            # except:
+            driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
+            par=get_user_pass(ca.message.chat.id).split()
+            driver.maximize_window()
+            login(par[0],par[1],driver)
+            driver.get("https://puya.kashmar.ac.ir/educ/educfac/stuShowEducationalLogFromGradeList.php")
+            time.sleep(1)
+            tr=driver.find_elements_by_xpath("/html/body/center/table/tbody")
+            trr=tr[0].find_elements_by_tag_name("tr")
+            g=1
+            htm=0
+            workbook = xlsxwriter.Workbook(f"number_do{id}.xls")
+            worksheet = workbook.add_worksheet()
+            for i in trr:
+                try:
+                    if int(driver.find_element_by_xpath(f"/html/body/center/table/tbody/tr[{g}]/td[1]").text)==1:
+                        htm=g
+                        break
+                except:
+                    g+=1
+            f=1
+            le=len(trr)
+            print(le,htm)
+            for i in trr:
+                if htm<=le:
+                    worksheet.write(f'A{f}',driver.find_element_by_xpath(f"/html/body/center/table/tbody/tr[{htm}]/td[2]").text)
+                    worksheet.write(f'B{f}',driver.find_element_by_xpath(f"/html/body/center/table/tbody/tr[{htm}]/td[3]").text)
+                    worksheet.write(f'C{f}',driver.find_element_by_xpath(f"/html/body/center/table/tbody/tr[{htm}]/td[4]").text)
+                    worksheet.write(f'D{f}',driver.find_element_by_xpath(f"/html/body/center/table/tbody/tr[{htm}]/td[5]").text)
+                    worksheet.write(f'E{f}',driver.find_element_by_xpath(f"/html/body/center/table/tbody/tr[{htm}]/td[6]").text)
+                    worksheet.write(f'F{f}',driver.find_element_by_xpath(f"/html/body/center/table/tbody/tr[{htm}]/td[7]").text)
+                    worksheet.write(f'G{f}',driver.find_element_by_xpath(f"/html/body/center/table/tbody/tr[{htm}]/td[8]").text)
+                    worksheet.write(f'H{f}',driver.find_element_by_xpath(f"/html/body/center/table/tbody/tr[{htm}]/td[9]").text)
+                    f+=1
+                    htm+=2
+            worksheet.write(f'A{f}',driver.find_element_by_xpath(f"/html/body/center/table/tbody/tr[{le}]/td[1]").text)
+            worksheet.write(f'B{f}',driver.find_element_by_xpath(f"/html/body/center/table/tbody/tr[{le}]/td[2]").text)
+            worksheet.write(f'C{f}',driver.find_element_by_xpath(f"/html/body/center/table/tbody/tr[{le}]/td[3]").text)
+            worksheet.write(f'D{f}',driver.find_element_by_xpath(f"/html/body/center/table/tbody/tr[{le}]/td[4]").text)
+            workbook.close()
+            driver.quit()
+            text=""
+            wb = xlrd.open_workbook(f"number_do{id}.xls")
+            sheet = wb.sheet_by_index(0)
+            sheet.cell_value(0, 0)
+            for i in range(sheet.nrows):
+                p=sheet.row_values(i)
+                if i<sheet.nrows-1:
+                    text+=f"📝کد درس: {p[0]} \n 📚نام درس: {p[1]} \n 🔶تعداد واحد: {p[2]} \n 👨‍🎓استاد: {p[3]} \n ❇نمره: {p[4]} \n 🔴وضعیت نمره: {p[5]} \n 📋شماره لیست نمره: {p[6]} \n ❇وضعیت لیست نمره: {p[7]}\n➖➖\n"
+                else:
+                    text+=f"🔲{p[0]}: {p[1]} \n 📜{p[2]}: {p[3]}"
+            await c.send_message(id,text,reply_markup=keyboard_personal)
+    elif sw==0:
         driver=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=option)
         par=get_user_pass(ca.message.chat.id).split()
         driver.maximize_window()
@@ -333,18 +386,7 @@ async def number_do(id,c,ca):
         worksheet.write(f'D{f}',driver.find_element_by_xpath(f"/html/body/center/table/tbody/tr[{le}]/td[4]").text)
         workbook.close()
         driver.quit()
-        text=""
-        wb = xlrd.open_workbook(f"number_do{id}.xls")
-        sheet = wb.sheet_by_index(0)
-        sheet.cell_value(0, 0)
-        for i in range(sheet.nrows):
-            p=sheet.row_values(i)
-            if i<sheet.nrows-1:
-                text+=f"📝کد درس: {p[0]} \n 📚نام درس: {p[1]} \n 🔶تعداد واحد: {p[2]} \n 👨‍🎓استاد: {p[3]} \n ❇نمره: {p[4]} \n 🔴وضعیت نمره: {p[5]} \n 📋شماره لیست نمره: {p[6]} \n ❇وضعیت لیست نمره: {p[7]}\n➖➖\n"
-            else:
-                text+=f"🔲{p[0]}: {p[1]} \n 📜{p[2]}: {p[3]}"
-        await c.send_message(id,text,reply_markup=keyboard_personal)
-    
+        
 def hozore(driver,id):
     try:
         url="https://puya.kashmar.ac.ir/educ/stu_portal/absReport.php"
@@ -794,7 +836,7 @@ async def callback(c,ca):
             await c.send_message(ca.message.chat.id,"❌شما تا کنون وارد نشده اید.\n💥برای استفاده از پنل کاربری ابتدا با استفاده از دکمه پنل کاربری وارد شوید شوید.",reply_markup=keyboard_home)
         else:
             dart=await c.send_message(ca.message.chat.id,"📥در حال دریافت...\nلطفا کمی صبر کنید")
-            await number_do(ca.message.chat.id,c,ca)
+            await number_do(ca.message.chat.id,c,ca,1)
             await c.delete_messages(dart.chat.id,dart.message_id)
         
     if text=="updinfo":
@@ -818,8 +860,10 @@ async def callback(c,ca):
                     await c.edit_message_text(pim.chat.id,pim.message_id,f"📡درحال اتصال به پرتال **¦ {neme} ¦**\n✅دریافت برنامه کلاسی\n✅دریافت لیست درس ها\n",parse_mode="markdown")
                     emtehanat(driver,ca.message.chat.id)
                     await c.edit_message_text(pim.chat.id,pim.message_id,f"📡درحال اتصال به پرتال **¦ {neme} ¦**\n✅دریافت برنامه کلاسی\n✅دریافت لیست درس ها\n✅دریافت برنامه امتحانی\n",parse_mode="markdown")
+                    await number_do(ca.message.chat.id,c,ca,0)
+                    await c.edit_message_text(pim.chat.id,pim.message_id,f"📡درحال اتصال به پرتال **¦ {neme} ¦**\n✅دریافت برنامه کلاسی\n✅دریافت لیست درس ها\n✅دریافت برنامه امتحانی\n✅دریافت نمرات ترم\n✅دریافت اطلاعات واکسناسیون\n",parse_mode="markdown")
                     vaksan(driver,ca.message.chat.id)
-                    await c.edit_message_text(pim.chat.id,pim.message_id,f"📡درحال اتصال به پرتال **¦ {neme} ¦**\n✅دریافت برنامه کلاسی\n✅دریافت لیست درس ها\n✅دریافت برنامه امتحانی\n✅دریافت اطلاعات واکسناسیون\n",parse_mode="markdown")
+                    await c.edit_message_text(pim.chat.id,pim.message_id,f"📡درحال اتصال به پرتال **¦ {neme} ¦**\n✅دریافت برنامه کلاسی\n✅دریافت لیست درس ها\n✅دریافت برنامه امتحانی\n✅دریافت نمرات ترم\n✅دریافت اطلاعات واکسناسیون\n",parse_mode="markdown")
                     await c.delete_messages(pim.chat.id,pim.message_id)
                     await c.send_message(ca.message.chat.id,"✅دریافت اطلاعات کامل شد",reply_markup=keyboard_personal)
                     await c.delete_messages(mes_job.chat.id,mes_job.message_id)
