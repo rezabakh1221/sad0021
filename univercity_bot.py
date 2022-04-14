@@ -577,7 +577,7 @@ def cheker_hozore(id):
     time=jdatetime.date.today().strftime("%H %Y-%m-%d").split(" ")
     if id in hozor_ids:
         hor=hozor_ids[id][:3]
-        if (int(time[0])-int(hor)>=6) and (diffDate(time[1],hozor_ids[id][3:])>0):
+        if (int(time[0])-int(hor)>=1) and (diffDate(time[1],hozor_ids[id][3:])>=0):
             hozor_ids[id]=f"{time[0]} {time[1]}"
             return 1
         else:
@@ -727,7 +727,7 @@ async def callback(c,ca):
                 os.remove(f"hozor{ca.message.chat.id}.png")
                 await c.delete_messages(hzr.chat.id,hzr.message_id)
         elif cheker_hozore(ca.message.chat.id)==0:
-            await c.send_message(ca.message.chat.id,"❌هنوز محدودیت 6 ساعته شما به پایان نرسیده است.",reply_markup=keyboard_personal)
+            await c.send_message(ca.message.chat.id,"❌هنوز محدودیت 1 ساعته شما به پایان نرسیده است.",reply_markup=keyboard_personal)
     
     if text=="plnclas":
         try:
